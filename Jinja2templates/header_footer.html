@@ -13,20 +13,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <!-- Custom styles for this template -->
 
-      <style>
-          #sidebar.affix-top {
-        position: static;
-        margin-top:30px;
-        width:228px;
-      }
-
-      #sidebar.affix {
-        position: fixed;
-        top:70px;
-        width:228px;
-      }
-      </style>
-
   </head>
 
   <body>
@@ -39,15 +25,21 @@
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item {% if 'home' in request.path %}active{% endif %}">
-            <a class="nav-link" href="{{ url('home page') }}">Home <span class="octicon octicon-home"></span><span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if 'ranking' in request.path %}active{% endif %}" href="{{ url('ranking') }}">Ranking <span class="octicon octicon-list-ordered"></span></a>
-          </li>
-        <li class="nav-item">
-            <a class="nav-link" href="https://github.com/Setti7/Stardew-Valley-Fishing-Bot">GitHub <span class="octicon octicon-mark-github"></span></a>
-          </li>
+            <li class="nav-item {% if 'home' in request.path %}active{% endif %}">
+                <a class="nav-link" href="{{ url('home page') }}">Home <span class="octicon octicon-home"></span><span class="sr-only">(current)</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if 'ranking' in request.path %}active{% endif %}" href="{{ url('ranking') }}">Ranking <span class="octicon octicon-list-ordered"></span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/Setti7/Stardew-Valley-Fishing-Bot">GitHub <span class="octicon octicon-mark-github"></span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href='/admin'>Admin</a>
+            </li>
         </ul>
 
     {% if not user.is_authenticated %}
