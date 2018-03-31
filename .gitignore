@@ -54,3 +54,6 @@ env/
 .idea
 .vs
 .vscode
+
+# Userdata
+usedata/
