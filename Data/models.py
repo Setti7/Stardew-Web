@@ -13,3 +13,10 @@ class UserData(models.Model):
     file = models.FileField(upload_to=user_directory_path)
     score = models.IntegerField(default=0)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-score"]
+        verbose_name_plural = 'User Data'
+
+    def __str__(self):
+        return "{}".format(str(self.user))

@@ -12,6 +12,8 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <!-- Custom styles for this template -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 
   </head>
 
@@ -48,7 +50,7 @@
             <a class="btn btn-outline-primary" href='/admin'>Create account</a>
         </div>
     {% else %}
-        <a class="btn btn-outline-primary" style="margin-right: 5px" href="{{ url('ranking') }}">Score: 000</a>
+        <a id="user_score" class="btn btn-outline-primary" style="margin-right: 5px" href="{{ url('ranking') }}">Score: 000</a>
         <a class="btn btn-outline-warning" href="{{ url('logout') }}?next={{request.path}}">Logout from {{user.username}} <span class="octicon octicon-sign-out"></span></a>
     {% endif %}
 
@@ -59,6 +61,23 @@
 
     {% endblock body %}
 
+<script>
+var endpoint = "{{ url('data-score') }}";
+
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        score = data.score;
+        document.getElementById("user_score").innerHTML = "Score: " + score;
+    },
+    error: function(error_data){
+        console.log("ERROR fetching user score")
+        //console.log(error_data)
+    }
+});
+
+</script>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

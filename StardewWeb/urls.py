@@ -20,14 +20,15 @@ from django.contrib.auth import views as auth_views
 from StardewWeb import views as core_views
 from django.conf import settings
 from django.conf.urls.static import static
+import Data.views as data_views
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/home')),
     path('admin/', admin.site.urls),
     path('home/', core_views.home_page, name='home page'),
     path('ranking/', include('Data.urls'), name='ranking'),
+    path('score/', core_views.score_data, name='data-score'),
     # path('home/', include('data.urls'), name='catalog'),
-
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
     #path('accounts/create-account/', core_views.signup, name='create account'),
