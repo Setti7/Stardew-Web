@@ -31,7 +31,7 @@ urlpatterns = [
     # path('home/', include('data.urls'), name='catalog'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    #path('accounts/create-account/', core_views.signup, name='create account'),
+    path('accounts/create/', core_views.signup, name='create account'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

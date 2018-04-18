@@ -10,7 +10,6 @@ from datetime import datetime, timedelta, date
 from StardewWeb.settings import MEDIA_ROOT
 
 
-@login_required
 def ranking(request):
 
     # File upload:

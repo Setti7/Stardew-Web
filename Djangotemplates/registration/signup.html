@@ -11,35 +11,34 @@
 <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/floating-labels/floating-labels.css"/>
 
     {% block title %}
-    <title>SDFB Login</title>
+    <title>SDFB Create Account</title>
     {% endblock title %}
 
 </head>
 <body>
-    <form class="form-signin" method="post" action="{% url 'login' %}">
+    <form class="form-signin" method="post" action="{% url 'create account' %}">
         {% csrf_token %}
         <div class="text-center mb-4">
             <img class="mb-4" src="{#% static 'img/android-chrome-192x192.png' %#}" width="72" height="72">
-            <h1 class="h3 mb-3 font-weight-normal">Access your account</h1>
-            <p>{% if form.errors %}There was an error while loggin in. Try again.{% endif %}</p>
+            <h1 class="h3 mb-3 font-weight-normal">Create your account</h1>
+            <p>{% if form.errors %}There was an error while creating you account. Try again.{% endif %}</p>
         </div>
         {% for field in form %}
         <div class="form-label-group">
-            <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" required autofocus>
+            <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" {% if field.html_name != "email" %}required {% endif %}autofocus>
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field.errors }}
+            <small>{{ field.errors }}</small>
         </div>
         {% endfor %}
 
         <div class="checkbox mb-3">
             <label>
-                <a href="#" data-toggle="tooltip" title="Send me a reddit message at u/ansetti">Forgot password?</a>
-                <br>
-                <a href="{% url 'create account' %}">Create account</a>
+                <a href="{% url 'login' %}">Already have an account? Login</a>
             </label>
 
         </div>
-        <button class="btn btn-lg btn-primary btn-block" value="login" type="submit">Login</button>
+
+        <button class="btn btn-lg btn-primary btn-block" value="login" type="submit">Create</button>
         <input type="hidden" name="next" value="{{ next }}" />
         <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2018</p>
     </form>

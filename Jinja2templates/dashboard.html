@@ -42,7 +42,7 @@
                 Upload your data
             </button>
 
-          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-sm btn-outline-secondary dropdown-toggle disabled" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span data-feather="calendar"></span> This week
           </button>
 
@@ -57,15 +57,20 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
+          {% if user.is_authenticated %}
         <h6 class="modal-title" id="dataUploadLabel">Click the button below to upload your collected data</h6>
+          {% else %}
+          <h6 class="modal-title" id="dataUploadLabel">I'm sorry, but you need an account.</h6>
+        {% endif %}
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
+        {% if user.is_authenticated %}
       <div class="modal-body">
 
           <div class="form-group">
-
 
             <form id="fileForm" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
@@ -88,9 +93,22 @@
           </div>
 
       </div>
+    {% else %}
+    <div class="modal-body">
+
+  <p>If you want to show up at the ranking, you need to create an account.
+       If you don't want to create one, but still want to help, you can go <a href="{{ url('home page') }}">here</a>.</p>
+
+    </div>
+    {% endif %}
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          {% if user.is_authenticated %}
         <button type="submit" form="fileForm" class="btn btn-primary">Upload</button>
+          {% else %}
+            <a class="btn btn-primary" href="{{ url('create account') }}?next={{request.path}}">Create account</a>
+              <a class="btn btn-primary" href="{{ url('login') }}?next={{request.path}}">Login</a>
+          {% endif %}
       </div>
     </div>
   </div>
