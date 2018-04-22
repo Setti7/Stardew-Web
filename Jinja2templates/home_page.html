@@ -1,10 +1,50 @@
 {% extends 'header_footer.html' %}
 
+
 {% block body %}
 
-<div class="col-10">
-    <h1><br><hr>Home</h1>
-    <p class="lead">I love bootstrap! <span class="octicon octicon-heart"></span></p>
-</div>
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3">Stardew Valley Fishing Bot</h1>
+            <br>
+          <p>Welcome to the SVFB project, where people like me (who can't fish for shit on this game) can now have a
+               chance at it!<br>The project is still not complete, I now need help collecting data from the game to finish
+               the machine learning process. Read below how to help!</p>
+          <p><a class="btn btn-primary btn-lg" href="#" role="button">Download! &raquo;</a></p>
+        </div>
+      </div>
 
+      <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="col-md-4">
+            <h2>How to help (please do)</h2>
+            <p>If you can, download the program on the download button above, click <strong>start</strong> and play the game as normal!
+                For it to work you need to use the <strong>C</strong> button to do all the fishing. The program does <i>NOT</i> work if you
+                fish with left-clicks. (You will be able to change this on the future!)</p>
+            <p><a class="btn btn-secondary" href="#" role="button">Read more on reddit &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>How it works</h2>
+            <p>
+                As soon as you click on start, the program will look on your screen for the fishing region, then, when the fishing
+                mini-game starts, the program will record the fish's position on the screen, saving it together with you
+                "C" clicks.<br> It stops recording as soon as the mini-game closes, and should automaticly send the data to
+                this website if you allow it. Also, you can see how many frames you contributed in total on the top of this page! (with one super
+                cool graphs that was hard as fuck to do!)
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h2>I don't want to create an account!</h2>
+            <p>I'm sorry, but if you want to help, you will need one to submit data
+                (use the username from your porn account on reddit, I don't care). It is this way so there is no overwriting on my webserver.
+            When the program is completed you will not need an account to use it.</p>
+          </div>
+        </div>
+
+        <hr>
+
+      </div> <!-- /container -->
 {% endblock body %}
+

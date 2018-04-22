@@ -26,7 +26,7 @@
         {% for field in form %}
         <div class="form-label-group">
             <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" {% if field.html_name != "email" %}required {% endif %}autofocus>
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <label for="{{ field.id_for_label }}">{% if field.html_name == "email" %}{{ field.label }} <i>(NOT REQUIRED)</i>{% else %}{{ field.label }}{% endif %}</label>
             <small>{{ field.errors }}</small>
         </div>
         {% endfor %}

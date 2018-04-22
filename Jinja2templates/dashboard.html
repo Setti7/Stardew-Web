@@ -146,13 +146,12 @@ var weekday = new Array(7);
     weekday[6] = "Saturday";
 
 var today = weekday[d.getDay()];
-var _1d = weekday[d.getDay() + 6];
-var _2d = weekday[d.getDay() + 5];
-var _3d = weekday[d.getDay() + 4];
-var _4d = weekday[d.getDay() + 3];
-var _5d = weekday[d.getDay() + 2];
-var _6d = weekday[d.getDay() + 1];
-var _7d = weekday[d.getDay()];
+var _1d = weekday[(d.getDay() + 6) % 7];
+var _2d = weekday[(d.getDay() + 5) % 7];
+var _3d = weekday[(d.getDay() + 4) % 7];
+var _4d = weekday[(d.getDay() + 3) % 7];
+var _5d = weekday[(d.getDay() + 2) % 7];
+var _6d = weekday[(d.getDay() + 1) % 7];
 
 values.reverse();
 for (var i=0;i<8;i++){
@@ -166,7 +165,7 @@ var ctx = document.getElementById("Chart");
 var myChart = new Chart(ctx, {
 type: 'line',
 data: {
-  labels: [_7d, _6d, _5d, _4d, _3d, _2d, _1d, today],
+  labels: [today, _6d, _5d, _4d, _3d, _2d, _1d, today],
   datasets: [{
     data: values.reverse(),
     lineTension: 0,

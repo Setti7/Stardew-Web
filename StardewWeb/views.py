@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from Data.models import UserData
+from Data.models import UserData, Version
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
@@ -17,6 +17,9 @@ def score_data(request):
     score = UserData.objects.get(user=request.user).score
     return JsonResponse({'score': score})
 
+def version_control(request):
+    version_control = [obj.as_dict() for obj in Version.objects.all()]
+    return JsonResponse({"Version Control": version_control})
 
 def signup(request):
     if request.method == 'POST':

@@ -21,6 +21,7 @@ from StardewWeb import views as core_views
 from django.conf import settings
 from django.conf.urls.static import static
 import Data.views as data_views
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/home')),
@@ -28,6 +29,7 @@ urlpatterns = [
     path('home/', core_views.home_page, name='home page'),
     path('ranking/', include('Data.urls'), name='ranking'),
     path('score/', core_views.score_data, name='data-score'),
+    path('version-control/', core_views.version_control, name='version control'),
     # path('home/', include('data.urls'), name='catalog'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
