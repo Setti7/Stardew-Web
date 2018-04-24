@@ -24,7 +24,7 @@ class UserData(models.Model):
 class Version(models.Model):
     version = models.CharField(max_length=20, unique=True)
     log = models.TextField(max_length=200)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
 
     class Meta:
         ordering = ['date']
