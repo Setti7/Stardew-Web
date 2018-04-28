@@ -6,7 +6,11 @@ from .models import UserData, Version
 @admin.register(UserData)
 class UserDataAdmin(admin.ModelAdmin):
     list_display = ('user','score', 'uploaded_at')
+    fields = ['user', 'file', 'score', 'uploaded_at']
+    readonly_fields = ['uploaded_at',]
+
 
 @admin.register(Version)
 class VersionAdmin(admin.ModelAdmin):
-    list_display = ('version','log', 'date')
+    list_display = ('version', 'critical', 'log', 'date')
+    fields = [('version', 'critical'), 'log', 'date']

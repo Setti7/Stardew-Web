@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from Data.models import UserData, Version
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
@@ -12,7 +13,7 @@ def home_page(request):
 
     return render(request, 'home_page.html', context={})
 
-
+@login_required
 def score_data(request):
     score = UserData.objects.get(user=request.user).score
     return JsonResponse({'score': score})

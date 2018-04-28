@@ -28,7 +28,7 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "dedeco.me", "192.168.1.102"]
 
 
 # Application definition
@@ -130,13 +130,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 TIME_ZONE = 'America/Buenos_Aires'
 
-TIME_ZONE = 'UTC'
-
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30 # 1 month
 

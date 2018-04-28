@@ -25,9 +25,10 @@ class Version(models.Model):
     version = models.CharField(max_length=20, unique=True)
     log = models.TextField(max_length=200)
     date = models.DateField()
+    critical = models.BooleanField()
 
     class Meta:
-        ordering = ['date']
+        ordering = ['-date']
         verbose_name = "Version"
         verbose_name_plural = "Version"
 
@@ -35,7 +36,8 @@ class Version(models.Model):
         return {
             "Version": self.version,
             "Changes": self.log,
-            "Date": self.date
+            "Date": self.date,
+            "Critical": self.critical
         }
 
     def __str__(self):
