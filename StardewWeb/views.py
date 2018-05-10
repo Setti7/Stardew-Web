@@ -15,7 +15,10 @@ def home_page(request):
 
 @login_required
 def score_data(request):
-    score = UserData.objects.get(user=request.user).score
+    try:
+        score = UserData.objects.get(user=request.user).score
+    except:
+        score = 0
     return JsonResponse({'score': score})
 
 def version_control(request):
