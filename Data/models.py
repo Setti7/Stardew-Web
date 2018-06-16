@@ -9,7 +9,7 @@ def user_directory_path(instance, filename):
 
 
 class UserData(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     file = models.FileField(upload_to=user_directory_path)
     score = models.IntegerField(default=0)
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -42,3 +42,18 @@ class Version(models.Model):
 
     def __str__(self):
         return "{}".format(str(self.version))
+
+# class Message(models.Model): # Make it accept bigger messages, but cut them when 240 is exceded
+#     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+#     message = models.TextField(max_length=240)
+#     time = models.DateTimeField()
+#
+#     class Meta:
+#          ordering = ['-time']
+#
+#     def as_dict(self):
+#         return {
+#             "User": self.user,
+#             "Time": self.time,
+#             "Message": self.message
+#         }
