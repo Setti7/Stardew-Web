@@ -1,0 +1,18 @@
+2018-06-22 02:17:27
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur elementum mattis enim, vel sagittis ante scelerisque interdum. Sed pulvinar ullamcorp
+
+Contact: False
+---------------------------------
+2018-06-22 02:23:13
+
+self.message_status_label.setText("Your message is to big!\nThe maximum is 240 chars.")
+
+Contact: False
+---------------------------------
+2018-06-22 02:23:28
+
+self.message_status_label.setText("Your message is to big!\nThe maximum is 240 chars.")
+
+Contact: False
+---------------------------------

@@ -42,15 +42,9 @@
 
         <div class="btn-toolbar mb-2 mb-md-0">
 
-            <button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal" data-target="#dataUpload">
-                Upload your data
+          <button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal" data-target="#accnt">
+                {% if user.is_authenticated %}Manage your data{% else %}How to help{% endif %}
             </button>
-
-            {% if user.is_authenticated %}
-          <button type="button" class="btn" style="margin-right: 5px" data-toggle="modal" data-target="#accnt">
-                Manage your data
-            </button>
-            {% endif %}
 
         </div>
       </div>
@@ -63,58 +57,23 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-          {% if user.is_authenticated %}
-        <h6 class="modal-title" id="dataUploadLabel">Click the button below to upload your collected data</h6>
-          {% else %}
-          <h6 class="modal-title" id="dataUploadLabel">I'm sorry, but you need an account.</h6>
-        {% endif %}
+        <h6 class="modal-title" id="dataUploadLabel">How to help</h6>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-
-        {% if user.is_authenticated %}
-      <div class="modal-body">
-
-          <div class="form-group">
-
-            <form id="fileForm" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                <label for="form">Select your <i>training_data.npy</i> below:</label>
-
-                {% for field in form %}
-                    <div class="fieldWrapper">
-                        {{ field.errors }}
-                        {{ field }}
-                        {% if field.help_text %}
-                        <p class="help">{{ field.help_text|safe }}</p>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            <br>
-            <h6 class="danger">Don't delete the file you just submitted if you intend to submit your data again!</h6>
-            </form>
-
-
-          </div>
-
-      </div>
-    {% else %}
     <div class="modal-body">
 
-  <p>If you want to show up at the ranking, you need to create an account.
-       If you don't want to create one, but still want to help, you can go <a href="{{ url('home page') }}">here</a>.</p>
+  <p>If you want to help, you need to download the desktop client. It will automaticaly submit the data collect to this
+      website. When logged in, this button will be changed to "manage your data", so you can control better what you
+      upload.<br><br>
+      Download the client <a href="{{ url('home page') }}">here</a>.
+  </p>
 
     </div>
-    {% endif %}
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          {% if user.is_authenticated %}
-        <button type="submit" form="fileForm" class="btn btn-primary">Upload</button>
-          {% else %}
             <a class="btn btn-primary" href="{{ url('create account') }}?next={{request.path}}">Create account</a>
               <a class="btn btn-primary" href="{{ url('login') }}?next={{request.path}}">Login</a>
-          {% endif %}
       </div>
     </div>
   </div>
@@ -144,9 +103,15 @@
               <td>{{ info.uploaded_at }}</td>
               <td>{{ info.score }}</td>
               <td>
-                  <button type="button" class="btn btn-sm btn-outline-danger">
-                      <svg style="margin-top: 4px" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"></path></svg>
-                  </button>
+                  <form method="post">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                      <input type="hidden" name="data_id" value="{{ info.id }}">
+                      <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <svg style="margin-top: 4px" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"></path></svg>
+                      </button>
+                  </form>
+
+
               </td>
             </tr>
           {% endfor %}

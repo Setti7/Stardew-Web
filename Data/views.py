@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.http import JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from .forms import UserDataForm
@@ -10,47 +11,66 @@ from datetime import datetime, timedelta, date
 from StardewWeb.settings import MEDIA_ROOT
 
 
+def home_page(request):
+    return render(request, 'home_page.html', context={})
+
+# TODO: fazer o post request de deletar dados como javascript, pra não ter que recarregar página
 def ranking(request):
 
-    # File upload:
+    # # File upload:
+    # # ----------------------------------------------------
+    # submitted = ''
+    # if request.method == 'POST':
+    #     form = UserDataForm(request.POST, request.FILES)
+    #
+    #     file = request.FILES['file']
+    #     submitted = 'False'
+    #
+    #     if form.is_valid() and (file.name == 'training_data.npy') and (file.size > 100):
+    #
+    #         score = len(list(np.load(file)))
+    #
+    #         # UserData.objects.filter(user=request.user).delete()
+    #         # folder = os.path.join(MEDIA_ROOT, "userdata/{0}".format(request.user))
+    #         #
+    #         # Deleting old files on the user folder
+    #         # try:
+    #         #     for things in os.listdir(folder):
+    #         #         things_path = os.path.join(folder, things)
+    #         #         if os.path.isfile(things_path):
+    #         #             os.unlink(things_path)
+    #         # except Exception as e:
+    #         #     print(e)
+    #
+    #         file = UserData(file=request.FILES['file'], user=request.user, score=score)
+    #
+    #         file.save()
+    #         submitted = 'True'
+    #
+    #         redirect('ranking/')
+    #
+    #     else:
+    #
+    #         if 'PROGRAM' in request.POST:
+    #             return HttpResponseRedirect('ranking/', status=201)
+    # else:
+    #
+    #     form = UserDataForm()
+
+    # Delete button:
     # ----------------------------------------------------
-    submitted = ''
     if request.method == 'POST':
-        form = UserDataForm(request.POST, request.FILES)
+        item_id = int(request.POST.get('data_id'))
+        item = UserData.objects.get(id=item_id)
 
-        file = request.FILES['file']
-        submitted = 'False'
+        # There must be a simple verifcation so check if the user who sent the request is the owner of the data
+        if request.user == item.user:
+            file = os.path.join('media', str(item.file))
+            if os.path.isfile(file):
+                os.unlink(file)
+                item.delete()
 
-        if form.is_valid() and (file.name == 'training_data.npy') and (file.size > 100):
-
-            score = len(list(np.load(file)))
-
-            # UserData.objects.filter(user=request.user).delete()
-            # folder = os.path.join(MEDIA_ROOT, "userdata/{0}".format(request.user))
-            #
-            # Deleting old files on the user folder
-            # try:
-            #     for things in os.listdir(folder):
-            #         things_path = os.path.join(folder, things)
-            #         if os.path.isfile(things_path):
-            #             os.unlink(things_path)
-            # except Exception as e:
-            #     print(e)
-
-            file = UserData(file=request.FILES['file'], user=request.user, score=score)
-
-            file.save()
-            submitted = 'True'
-
-            redirect('ranking/')
-
-        else:
-
-            if 'PROGRAM' in request.POST:
-                return HttpResponseRedirect('ranking/', status=201)
-    else:
-
-        form = UserDataForm()
+        return HttpResponseRedirect('/ranking')
 
     # Best Contributors table:
     # ----------------------------------------------------
@@ -108,17 +128,17 @@ def ranking(request):
 
         user_data = []
         for upload in uploads:
-            filename = os.path.split(str(upload.file))[1]
-            filename = os.path.splitext(filename)[0]
+            # filename = os.path.split(str(upload.file))[1]
+            # filename = os.path.splitext(filename)[0]
             date = upload.uploaded_at.strftime('%Y-%m-%d %H:%M:%S')
+            user_data.append({"score": upload.score, "id": upload.id, "uploaded_at": date})
 
-            user_data.append({"score": upload.score, "id": filename, "uploaded_at": date})
     else:
         user_data = {}
 
     return render(request, 'dashboard.html', context={
-        'form': form,
-        'submitted': submitted,
+        # 'form': form,
+        # 'submitted': submitted,
         'bffs_dict': bffs,
         'data': json.dumps(data),
         'score_sum': pro_data,
