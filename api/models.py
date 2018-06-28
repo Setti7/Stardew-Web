@@ -1,14 +1,15 @@
 from django.db import models
+from Data.models import Version
 from django.contrib.auth.models import User
 
 
 class Message(models.Model): # Make it accept bigger messages, but cut them when 240 is exceded
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    message = models.TextField(max_length=240)
+    message = models.TextField(max_length=1000)
     contact = models.EmailField(null=True, blank=True)
     time = models.DateTimeField(auto_now_add=True)
-    version = models.CharField(max_length=10)
-    done = models.BooleanField(default=False)
+    version = models.ForeignKey(Version, on_delete=models.SET_NULL, null=True)
+    read = models.BooleanField()
 
     class Meta:
          ordering = ['-time']
@@ -20,5 +21,5 @@ class Message(models.Model): # Make it accept bigger messages, but cut them when
             "Message": self.message,
             "Contact": self.contact,
             "Version": self.version,
-            "Done": self.done
+            "Read": self.read
         }

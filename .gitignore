@@ -57,3 +57,6 @@ env/
 
 # Userdata
 userdata/
+
+# Static admin
+static/admin

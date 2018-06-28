@@ -7,15 +7,12 @@
     <meta name="author" content="André Niero Setti">
     <link rel="icon" href="#">
 
-    {% block title %}<title>Fishing Bot</title>{% endblock title %}
+    {% block title %}<title>Fishing Bots</title>{% endblock title %}
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    {% block stylesheet %}
-
-    {% endblock %}
+  {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/jquery_3.3.1_jquery.js' %}"></script>
 
     <!-- Custom styles for this template -->
 
@@ -32,30 +29,26 @@
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item {% if 'home' in request.path %}active{% endif %}">
-                <a class="nav-link" href="{{ url('home page') }}">Home <span class="octicon octicon-home"></span><span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'home page' %}">Home <span class="octicon octicon-home"></span><span class="sr-only">(current)</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {% if 'ranking' in request.path %}active{% endif %}" href="{{ url('ranking') }}">Ranking <span class="octicon octicon-list-ordered"></span></a>
+                <a class="nav-link {% if 'ranking' in request.path %}active{% endif %}" href="{% url 'ranking' %}">Ranking <span class="octicon octicon-list-ordered"></span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="https://github.com/Setti7/Stardew-Valley-Fishing-Bot">GitHub <span class="octicon octicon-mark-github"></span></a>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href='/admin'>Admin</a>
-            </li>
         </ul>
 
     {% if not user.is_authenticated %}
         <div class="btn-group my-2 my-sm-0">
-            <a class="btn btn-outline-primary" href="{{ url('login') }}?next={{request.path}}">Login <span class="octicon octicon-sign-in"></span></a>
-            <a class="btn btn-outline-primary" href='{{ url('create account') }}?next={{request.path}}'>Create account</a>
+            <a class="btn btn-outline-primary" href="{% url 'login' %}?next={{request.path}}">Login <span class="octicon octicon-sign-in"></span></a>
+            <a class="btn btn-outline-primary" href='{% url 'create account' %}?next={{request.path}}'>Create account</a>
         </div>
     {% else %}
-        <a id="user_score" class="btn btn-outline-primary" style="margin-right: 5px" href="{{ url('ranking') }}">Score: 000</a>
-        <a class="btn btn-outline-warning" href="{{ url('logout') }}?next={{request.path}}">Logout from {{user.username}} <span class="octicon octicon-sign-out"></span></a>
+        <a id="user_score" class="btn btn-outline-primary" style="margin-right: 5px" href="{% url 'ranking' %}">Score: 000</a>
+        <a class="btn btn-outline-warning" href="{% url 'logout' %}?next={{request.path}}">Logout from {{user.username}} <span class="octicon octicon-sign-out"></span></a>
     {% endif %}
 
       </div>
@@ -66,7 +59,7 @@
     {% endblock body %}
 
 <script>
-var endpoint = "{{ url('score') }}";
+var endpoint = "{% url 'score' %}";
 
 $.ajax({
     method: "GET",
@@ -86,7 +79,8 @@ $.ajax({
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css" integrity="sha256-4y5taf5SyiLyIqR9jL3AoJU216Rb8uBEDuUjBHO9tsQ=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{% static 'js/popper.js_1.14.3_umd_popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap_4.1.0_js_bootstrap.js' %}"></script>
+
   </body>
 </html>

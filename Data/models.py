@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from uuid import uuid4
 # import numpy as np
 
 
@@ -9,6 +10,7 @@ def user_directory_path(instance, filename):
 
 
 class UserData(models.Model):
+    id =  models.UUIDField('id', primary_key=True, default=uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     file = models.FileField(upload_to=user_directory_path)
     score = models.IntegerField(default=0)
@@ -23,7 +25,7 @@ class UserData(models.Model):
 
 class Version(models.Model):
     version = models.CharField(max_length=20, unique=True)
-    log = models.TextField(max_length=200)
+    log = models.TextField(max_length=500)
     date = models.DateField()
     critical = models.BooleanField()
 

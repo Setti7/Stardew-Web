@@ -17,50 +17,10 @@ def home_page(request):
 # TODO: fazer o post request de deletar dados como javascript, pra não ter que recarregar página
 def ranking(request):
 
-    # # File upload:
-    # # ----------------------------------------------------
-    # submitted = ''
-    # if request.method == 'POST':
-    #     form = UserDataForm(request.POST, request.FILES)
-    #
-    #     file = request.FILES['file']
-    #     submitted = 'False'
-    #
-    #     if form.is_valid() and (file.name == 'training_data.npy') and (file.size > 100):
-    #
-    #         score = len(list(np.load(file)))
-    #
-    #         # UserData.objects.filter(user=request.user).delete()
-    #         # folder = os.path.join(MEDIA_ROOT, "userdata/{0}".format(request.user))
-    #         #
-    #         # Deleting old files on the user folder
-    #         # try:
-    #         #     for things in os.listdir(folder):
-    #         #         things_path = os.path.join(folder, things)
-    #         #         if os.path.isfile(things_path):
-    #         #             os.unlink(things_path)
-    #         # except Exception as e:
-    #         #     print(e)
-    #
-    #         file = UserData(file=request.FILES['file'], user=request.user, score=score)
-    #
-    #         file.save()
-    #         submitted = 'True'
-    #
-    #         redirect('ranking/')
-    #
-    #     else:
-    #
-    #         if 'PROGRAM' in request.POST:
-    #             return HttpResponseRedirect('ranking/', status=201)
-    # else:
-    #
-    #     form = UserDataForm()
-
     # Delete button:
     # ----------------------------------------------------
     if request.method == 'POST':
-        item_id = int(request.POST.get('data_id'))
+        item_id = request.POST.get('data_id')
         item = UserData.objects.get(id=item_id)
 
         # There must be a simple verifcation so check if the user who sent the request is the owner of the data
@@ -74,7 +34,6 @@ def ranking(request):
 
     # Best Contributors table:
     # ----------------------------------------------------
-
     # Get all users from database
     list_of_users=[]
     for obj in UserData.objects.all():
@@ -102,13 +61,15 @@ def ranking(request):
 
     # Graph data:
     # ----------------------------------------------------
-
     last_week = datetime.now() - timedelta(days=7)
 
     # Creates a list of dicts of all users' scores, with upload date. Eg: [{'date': 2018-1-22, 'score':122}, {'date': 2018-1-22, 'score':1212}, {'date': 2018-1-23, 'score':245}]
-    lst = [{"date": str(obj.uploaded_at.date()), "score": obj.score} for obj in UserData.objects
-        .filter(uploaded_at__gt=last_week)
-        .order_by('uploaded_at')]
+    lst = [{
+            "date": str(obj.uploaded_at.date()),
+            "score": obj.score
+            }
+            for obj in UserData.objects.filter(uploaded_at__gt=last_week).order_by('uploaded_at')
+        ]
 
     # Group the scores from the list of dicts, with respect to the date.
     data = {}
@@ -116,10 +77,11 @@ def ranking(request):
         scores = [dict["score"] for dict in list(value)]
         data[key] = sum(scores)
 
+
     # Progress Bar data:
     # ----------------------------------------------------
-
     pro_data = UserData.objects.aggregate(Sum('score'))['score__sum']
+
 
     # Data Submitted:
     # ----------------------------------------------------
@@ -128,8 +90,6 @@ def ranking(request):
 
         user_data = []
         for upload in uploads:
-            # filename = os.path.split(str(upload.file))[1]
-            # filename = os.path.splitext(filename)[0]
             date = upload.uploaded_at.strftime('%Y-%m-%d %H:%M:%S')
             user_data.append({"score": upload.score, "id": upload.id, "uploaded_at": date})
 
@@ -137,8 +97,7 @@ def ranking(request):
         user_data = {}
 
     return render(request, 'dashboard.html', context={
-        # 'form': form,
-        # 'submitted': submitted,
+
         'bffs_dict': bffs,
         'data': json.dumps(data),
         'score_sum': pro_data,

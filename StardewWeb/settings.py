@@ -27,6 +27,7 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+DEBUG = False
 
 ALLOWED_HOSTS = ["127.0.0.1", "dedeco.me", "192.168.1.102"]
 
@@ -71,25 +72,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
-    },
-    {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2'
-        ,
-        'DIRS': [os.path.join(BASE_DIR, 'Jinja2templates')]
-        ,
-        'APP_DIRS': True,
-        'OPTIONS': {
-
-            'environment': 'StardewWeb.jinja2.environment',
-
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
+    }
 ]
 
 WSGI_APPLICATION = 'StardewWeb.wsgi.application'
@@ -145,8 +128,7 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30 # 1 month
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

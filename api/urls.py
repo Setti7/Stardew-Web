@@ -7,6 +7,7 @@ urlpatterns = [
     path('bug-report', views.bug_report, name='bug report'),
     path('data-upload', views.data_upload, name='data upload'),
     path('login', views.api_login, name='api login'),
+    # path('download', views.download, name='update'),
     path('create-account', views.api_create_account, name='api create account')
 
 ]

@@ -6,8 +6,8 @@ from .models import UserData, Version
 @admin.register(UserData)
 class UserDataAdmin(admin.ModelAdmin):
     list_display = ('user','score', 'uploaded_at')
-    fields = ['user', 'file', 'score', 'uploaded_at']
-    readonly_fields = ['uploaded_at',]
+    fields = ['user', 'file', 'score', 'uploaded_at', 'id']
+    readonly_fields = ['uploaded_at', 'id']
 
 
 @admin.register(Version)

@@ -20,9 +20,9 @@
           <tbody>
           {% for user in bffs_dict %}
             <tr>
-              <td>{{ user['position']}}</td>
-              <td>{{ user['user'] }}</td>
-              <td>{{ user['score'] }}</td>
+              <td>{{ user.position }}</td>
+              <td>{{ user.user }}</td>
+              <td>{{ user.score }}</td>
             </tr>
           {% endfor %}
 
@@ -37,52 +37,26 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2">Frames per day on this week:</h1>
 
-          <small id="submitted_text">
-          </small>
-
         <div class="btn-toolbar mb-2 mb-md-0">
-
-          <button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal" data-target="#accnt">
-                {% if user.is_authenticated %}Manage your data{% else %}How to help{% endif %}
-            </button>
+            {% if user.is_authenticated %}
+                <button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal" data-target="#accnt">
+                    Manage your data
+                </button>
+            {% else %}
+                <button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal" data-target="#how-to-help">
+                    How to Help
+                </button>
+            {% endif %}
 
         </div>
       </div>
 
       <canvas class="my-4" id="Chart" width="950" height="500"></canvas>
 
-
-<!-- Modal Data Upload -->
-<div class="modal fade" id="dataUpload" tabindex="-1" role="dialog" aria-labelledby="dataUploadLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h6 class="modal-title" id="dataUploadLabel">How to help</h6>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    <div class="modal-body">
-
-  <p>If you want to help, you need to download the desktop client. It will automaticaly submit the data collect to this
-      website. When logged in, this button will be changed to "manage your data", so you can control better what you
-      upload.<br><br>
-      Download the client <a href="{{ url('home page') }}">here</a>.
-  </p>
-
-    </div>
-      <div class="modal-footer">
-            <a class="btn btn-primary" href="{{ url('create account') }}?next={{request.path}}">Create account</a>
-              <a class="btn btn-primary" href="{{ url('login') }}?next={{request.path}}">Login</a>
-      </div>
-    </div>
-  </div>
-</div>
-
 {% if user.is_authenticated %}
 <!-- Modal Data Submitted -->
 <div class="modal fade" id="accnt" tabindex="-1" role="dialog" aria-labelledby="accntlabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
 
@@ -103,12 +77,16 @@
               <td>{{ info.uploaded_at }}</td>
               <td>{{ info.score }}</td>
               <td>
+
                   <form method="post">
-                      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                      {% csrf_token %}
                       <input type="hidden" name="data_id" value="{{ info.id }}">
                       <button type="submit" class="btn btn-sm btn-outline-danger">
                         <svg style="margin-top: 4px" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"></path></svg>
                       </button>
+                      <a tabindex="0" role="button" class="btn btn-secondary btn-sm" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" data-content="<small>{{ info.id }}</small>">
+                      ID
+                    </a>
                   </form>
 
 
@@ -133,13 +111,53 @@
     </main>
   </div>
 </div>
+
+{% else %}
+
+<!-- Modal Data Upload -->
+<div class="modal fade" id="how-to-help" tabindex="-1" role="dialog" aria-labelledby="how-to-help-label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="how-to-help-label">How to help</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <div class="modal-body">
+
+  <p>If you want to help, you need to download the desktop client. It will automaticaly submit the data collected to this
+      website. When logged in, this button will be changed to "manage your data", so you can control better what you
+      upload.<br><br>
+      Download the client <a href="{% url 'home page' %}">here</a>.
+  </p>
+
+    </div>
+      <div class="modal-footer">
+            <a class="btn btn-primary" href="{% url 'create account' %}?next={{request.path}}">Create account</a>
+              <a class="btn btn-primary" href="{% url 'login' %}?next={{request.path}}">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endif %}
 
 <!-- Graphs -->
 
-<!--https://stackoverflow.com/questions/31092489/chart-js-draw-horizontal-line-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+{% load static %}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js" integrity="sha256-t3+U9BqykoMN9cqZmJ5Z53TvPv4V7S9AmjUcIWNNyxo=" crossorigin="anonymous"></script>#}
+<script src="{% static 'js/Chart_2.7.1_Chart.js' %}"></script>
+
+    <!--https://stackoverflow.com/questions/31092489/chart-js-draw-horizontal-line-->
 <script>
+
+// Enabing all popovers
+$(function () {
+  $('[data-toggle="popover"]').popover()
+});
+
+
 var score_sum = "{{ score_sum|safe }}";
 
 var percentage = function(){
@@ -205,18 +223,6 @@ options: {
   }
 }
 });
-
-var submitted = "{{ submitted }}";
-
-if (submitted === 'True'){
-     document.getElementById("submitted_text").innerHTML = "";
-    alert("Thanks for your help and don't forget to check your new score!");
-}
-else if (submitted ==='False') {
-     document.getElementById("submitted_text").innerHTML = "You can't submit a modified file. Please try again.";
- alert("There was an error submitting your form. You can't submit a modified file. Please try again.");
-}
-
 </script>
 
 {% endblock body %}
