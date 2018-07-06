@@ -7,10 +7,10 @@
     <meta name="author" content="André Niero Setti">
     <link rel="icon" href="#">
 
-    {% block title %}<title>Fishing Bots</title>{% endblock title %}
+    {% block title %}<title>Fishing Bot</title>{% endblock title %}
 
     <!-- Bootstrap core CSS -->
-  {% load staticfiles %}
+  {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <script src="{% static 'js/jquery_3.3.1_jquery.js' %}"></script>
 
@@ -21,7 +21,7 @@
   <body>
 
     <nav style="margin: 0;" class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-      <img class="navbar-brand" src="https://i.imgur.com/VPzkLKq.png"/>
+      <img class="navbar-brand" src="{% static 'img/logo.png' %}"/>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -47,7 +47,7 @@
             <a class="btn btn-outline-primary" href='{% url 'create account' %}?next={{request.path}}'>Create account</a>
         </div>
     {% else %}
-        <a id="user_score" class="btn btn-outline-primary" style="margin-right: 5px" href="{% url 'ranking' %}">Score: 000</a>
+        <a id="user_score" class="btn btn-outline-primary" style="margin-right: 5px" href="{% url 'ranking' %}">Score: {{ score }}</a>
         <a class="btn btn-outline-warning" href="{% url 'logout' %}?next={{request.path}}">Logout from {{user.username}} <span class="octicon octicon-sign-out"></span></a>
     {% endif %}
 
@@ -58,23 +58,6 @@
 
     {% endblock body %}
 
-<script>
-var endpoint = "{% url 'score' %}";
-
-$.ajax({
-    method: "GET",
-    url: endpoint,
-    success: function(data){
-        score = data.score;
-        document.getElementById("user_score").innerHTML = "Score: " + score;
-    },
-    error: function(error_data){
-        console.log("ERROR fetching user score")
-        //console.log(error_data)
-    }
-});
-
-</script>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

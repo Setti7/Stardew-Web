@@ -62,8 +62,8 @@
 
             <h2 id="Hall">Data Submitted:</h2>
 
-        <div class="table-responsive">
-        <table class="table table-sm">
+      {% if user_data %}
+        <table class="table table-sm" style="margin-bottom: 0">
           <thead>
             <tr>
               <th>Date</th>
@@ -89,7 +89,6 @@
                     </a>
                   </form>
 
-
               </td>
             </tr>
           {% endfor %}
@@ -97,7 +96,10 @@
           </tbody>
         </table>
 
-        </div>
+        {% else %}
+          <hr>
+          <p>You haven't submitted any data yet. Download the desktop client <a href="#">here</a> to start.</p>
+        {% endif %}
       </div>
 
       <div class="modal-footer">
