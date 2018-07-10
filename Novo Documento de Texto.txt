@@ -1,0 +1,15 @@
+{"version": "0.8", "log": "
+Added update notification\r\nAdded login popup (which does not authenticate)\r\nAdded zoom level functionality
+", "date": "2018-04-23", "critical": false}},
+{"version": "0.9", "log": "
+Added authorization to login dialog.\r\nAdded automatic login on program startup.
+", "date": "2018-04-24", "critical": false}},
+{"version": "0.95", "log": "
+Added account creation option.
+", "date": "2018-04-25", "critical": false}},
+{"version": "0.98", "log": "
+Added dog animation\r\nAdded logout\r\nAdded menu bar\r\nAdded automatic data upload\r\nAdded online/local score comparison\r\nAdded \"delete last data\" option
+", "date": "2018-05-02", "critical": false}},
+{"version": "1.0", "log": "
+Added API integration\r\nChanged screen capture method\r\nSignificantly improved performance\r\nGUI made prettier\r\nAdded \"Bug Report\" tab\r\nMoved \"Delete last data\" to website\r\nAdded loading animation\r\nRemoved option to not send data automatically\r\nFixed a ton of bugs and a lot more!
+", "date": "2018-06-23", "critical": false}},

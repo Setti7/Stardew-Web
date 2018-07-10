@@ -10,7 +10,7 @@ def user_directory_path(instance, filename):
 
 
 class UserData(models.Model):
-    id =  models.UUIDField('id', primary_key=True, default=uuid4, editable=False)
+    id =  models.UUIDField(primary_key=True, default=uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     file = models.FileField(upload_to=user_directory_path)
     score = models.IntegerField(default=0)

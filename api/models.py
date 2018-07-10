@@ -3,7 +3,7 @@ from Data.models import Version
 from django.contrib.auth.models import User
 
 
-class Message(models.Model): # Make it accept bigger messages, but cut them when 240 is exceded
+class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     message = models.TextField(max_length=1000)
     contact = models.EmailField(null=True, blank=True)

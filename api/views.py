@@ -1,5 +1,5 @@
 from django.http import JsonResponse, HttpResponse, FileResponse
-from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.shortcuts import render, redirect, HttpResponseRedirect, get_object_or_404
 import numpy as np
 import json
 from django.contrib.auth.models import User
@@ -91,9 +91,7 @@ def bug_report(request):
             contact = None
 
         user = User.objects.get(username__exact=username)
-        version = Version.objects.get(version=version)
-        print(version.id)
-        print(version)
+        version = get_object_or_404(Version, version=version)
 
         form = MessageForm({
             'csrfmiddlewaretoken': request.POST['csrfmiddlewaretoken'],
