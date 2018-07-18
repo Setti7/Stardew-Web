@@ -1,0 +1,39 @@
+0.8
+Added update notification
+Added login popup (which does not authenticate)
+Added zoom level functionality
+2018-04-23
+
+
+0.9
+Added authorization to login dialog.
+Added automatic login on program startup.
+2018-04-24
+
+
+0.95
+Added account creation option.
+2018-04-25
+
+
+0.98
+Added dog animation
+Added logout
+Added menu bar
+Added automatic data upload
+Added online/local score comparison
+Added "delete last data" option
+2018-05-02
+
+
+1.0
+Added API integration
+Changed screen capture method
+Significantly improved performance
+GUI made prettier
+Added "Bug Report" tab
+Moved "Delete last data" to website
+Added loading animation
+Removed option to not send data automatically
+Fixed a ton of bugs and a lot more!
+2018-06-23

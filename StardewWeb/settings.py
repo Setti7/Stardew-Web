@@ -21,13 +21,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY_WEBSITE')
+SECRET_KEY = "*rgat8supbqkolhc(&jwl3%8tccy$dim0g9&eh!n+q_+@x10p6"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "dedeco.me", "192.168.1.102"]
+ALLOWED_HOSTS = ["127.0.0.1", "dedeco.me", "192.168.1.102", "*"]
 
 
 # Application definition
@@ -89,9 +90,9 @@ WSGI_APPLICATION = 'StardewWeb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Stardew_Web',
+        'NAME': 'Stardew_Web_DB',
         'USER': 'admin',
-        'PASSWORD': 'BNM,.;421',
+        'PASSWORD': 'SenhaDataBase77',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
