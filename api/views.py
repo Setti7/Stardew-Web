@@ -123,11 +123,14 @@ def data_upload(request):
             form = UserDataForm(request.POST, request.FILES)
 
             file = request.FILES['file']
+            version = request.POST['version']
+
+            version = Version.objects.get(version__exact=version)
 
             if form.is_valid() and (file.name == 'training_data.npy'):# and (file.size > 140000):
 
                 score = len(list(np.load(file)))
-                file = UserData(file=request.FILES['file'], user=request.user, score=score)
+                file = UserData(file=request.FILES['file'], user=request.user, score=score, processed=False, version=version)
                 file.save()
 
                 return JsonResponse({'success': True}) # status 200

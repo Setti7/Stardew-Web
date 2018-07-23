@@ -15,6 +15,8 @@ class UserData(models.Model):
     file = models.FileField(upload_to=user_directory_path)
     score = models.IntegerField(default=0)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    processed = models.BooleanField()
+    version = models.ForeignKey('Version', on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ["-score"]
