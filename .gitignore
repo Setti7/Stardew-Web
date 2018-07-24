@@ -60,3 +60,5 @@ userdata/
 
 # Static admin
 static/admin
+START_POSTGRES_SERVER.bat
+db.sqlite3
