@@ -157,18 +157,10 @@
 <!-- Graphs -->
 
 {% load static %}
-{#<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js" integrity="sha256-t3+U9BqykoMN9cqZmJ5Z53TvPv4V7S9AmjUcIWNNyxo=" crossorigin="anonymous"></script>#}
-<script src="{% static 'js/Chart_2.7.1_Chart.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js" integrity="sha256-t3+U9BqykoMN9cqZmJ5Z53TvPv4V7S9AmjUcIWNNyxo=" crossorigin="anonymous"></script>
 
     <!--https://stackoverflow.com/questions/31092489/chart-js-draw-horizontal-line-->
 <script>
-
-// Enabing all popovers
-$(function () {
-  $('[data-toggle="popover"]').popover()
-});
-
-
 var score_sum = "{{ score_sum|safe }}";
 
 var percentage = function(){
@@ -237,3 +229,15 @@ options: {
 </script>
 
 {% endblock body %}
+
+
+{% block end_script %}
+<script>
+
+// Enabing all popovers
+$(function () {
+  $('[data-toggle="popover"]').popover()
+});
+
+</script>
+{% endblock end_script %}
