@@ -9,9 +9,9 @@ class UserDataAdmin(admin.ModelAdmin):
     list_display = ('user', 'version_link', 'processed', 'score', 'id', 'uploaded_at',)
     fields = ['user', 'file', 'score', 'uploaded_at', 'id']
     readonly_fields = ['uploaded_at', 'id']
+
     date_hierarchy = 'uploaded_at'
     actions = ['mark_as_processed', 'unmark_as_processed']
-
     list_filter = ('version', 'processed')
 
     def version_link(self, obj):

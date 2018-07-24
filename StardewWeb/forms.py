@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class SignUpForm(UserCreationForm):
-    email = forms.EmailField(max_length=254, required=False, help_text="Optional. We won't send you any emails, this is just if you forget your password.")
+    email = forms.EmailField(max_length=254, help_text="We won't send you any emails, this is just if you forget your password.")
 
     class Meta:
         model = User

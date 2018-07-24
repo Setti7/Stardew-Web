@@ -8,9 +8,10 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('details','read', 'message', 'user', 'contact', 'version_link')
     fields = ['read', 'version', 'time', 'user', 'message', 'contact']
     readonly_fields = ['time', 'user', 'contact', 'version', 'message']
+
+
     actions = ['mark_as_read', 'unmark_as_read']
     date_hierarchy = 'time'
-
     list_filter = ('read', 'version')
 
     def version_link(self, obj):

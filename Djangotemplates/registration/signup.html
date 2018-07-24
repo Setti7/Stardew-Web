@@ -23,14 +23,21 @@
         <div class="text-center mb-4">
             <img class="mb-4" src="{% static 'img/logo.png' %}" width="72" height="72">
             <h1 class="h3 mb-3 font-weight-normal">Create your account</h1>
-            <p>{% if form.errors %}There was an error while creating you account. Try again.{% endif %}</p>
+            <p style="color: #dc3545;">{% if form.errors %}There was an error while creating you account.<br>Try again.{% endif %}</p>
         </div>
+
         {% for field in form %}
+
         <div class="form-label-group">
-            <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" {% if field.html_name != "email" %}required {% endif %}autofocus>
-            <label for="{{ field.id_for_label }}">{% if field.html_name == "email" %}{{ field.label }} <i>(NOT REQUIRED)</i>{% else %}{{ field.label }}{% endif %}</label>
-            <small>{{ field.errors }}</small>
+            <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" autofocus>
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+            {% for error in field.errors %}
+                <small style="color: #dc3545;">{{ error|safe }}</small>
+            {% endfor %}
+
         </div>
+
         {% endfor %}
 
         <div class="checkbox mb-3">

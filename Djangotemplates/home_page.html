@@ -1,48 +1,123 @@
 {% extends 'header_footer.html' %}
 
+{% block extra_static %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+{% endblock extra_static %}
 
 {% block body %}
 
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <div class="container">
-          <h1 class="display-3">Stardew Valley Fishing Bot</h1>
-            <br>
-          <p>Welcome to the SVFB project, where people like me (who can't fish for shit on this game) can now have a
-               chance at it!<br>The project is still not complete, I now need help collecting data from the game to finish
-               the machine learning process. Read below how to help!</p>
-          <p><a class="btn btn-primary btn-lg" href="https://github.com/Setti7/SVFB-GUI/releases" role="button">Download! &raquo;</a></p>
+    <main role="main">
+
+      <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="10000">
+        <ol class="carousel-indicators">
+          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+          <li data-target="#myCarousel" data-slide-to="1"></li>
+          <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="first-slide" src="{% static 'img/slide-1.png' %}" alt="First slide">
+            <div class="container">
+              <div class="carousel-caption text-left">
+                <h1 style="text-shadow: 2px 2px 4px #000000">Welcome to Stardew Valley Fishing Bot</h1>
+                <p style="text-shadow: 1px 1px 3px #000000">This project is for people like me, who can't fish for shit on this game, so we can have a chance completing it!<br>
+                    It's still not complete, we need help collecting data from the game to finish
+                    the machine learning process.<br>Read below how to help!</p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img class="second-slide" src="{% static 'img/slide-2.png' %}" alt="Second slide">
+            <div class="container">
+              <div class="carousel-caption">
+                <h1 style="text-shadow: 2px 2px 4px #000000">Help Gathering Data</h1>
+                  <p style="text-shadow: 1px 1px 3px #000000">Machines are dumb, they need a lot of data to be trained on. A convolutional neural network (the machine learning we are using) is no exception, it needs a lot of images to be successfully trained on, ideally, more than 1 million.</p>
+                    <p style="text-shadow: 1px 1px 3px #000000">So help us out! Download the desktop client and start collecting!</p>
+                <p style="text-shadow: 1px 1px 3px #000000"><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img class="third-slide" src="{% static 'img/slide-3.png' %}" alt="Third slide">
+            <div class="container">
+              <div class="carousel-caption text-right">
+                <h1 style="text-shadow: 2px 2px 4px #000000">Be the best at something you should not care about!</h1>
+                <p style="text-shadow: 1px 1px 3px #000000">The best at what you ask? The best at collecting data!<br>
+                    Go to the ranking page and checkout my bestfriends, those who contributed more towards the 1 million frames goal!</p>
+                <p style="text-shadow: 1px 1px 3px #000000"><a class="btn btn-primary btn-lg" href="{% url 'ranking' %}" role="button">Visit Ranking</a></p>
+              </div>
+            </div>
+          </div>
         </div>
+        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
       </div>
 
-      <div class="container">
-        <!-- Example row of columns -->
-        <div class="row">
-          <div class="col-md-4">
-            <h2>How to help (please do)</h2>
-            <p>If you can, download the program on the download button above, click <strong>start</strong> and play the game as normal!
-                For it to work you need to use any keyboard button to fish (you just need to set it, the default is C). The program does <i>NOT</i> work if you
-                fish with left-clicks.</p>
-            <p><a class="btn btn-secondary" href="#" role="button">Read more on reddit &raquo;</a></p>
+
+      <!-- Marketing messaging and featurettes
+      ================================================== -->
+      <!-- Wrap the rest of the page in another container to center all the content. -->
+
+      <div class="container marketing">
+
+        <!-- Three columns of text below the carousel -->
+
+
+
+        <!-- START THE FEATURETTES -->
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+          <div class="col-md-7">
+            <h2 class="featurette-heading">Love playing games? <span class="text-muted">Don't worry, with this, you will never need to play again!</span></h2>
+              <p class="lead">Made by someone who loves Stardew Valley, but was bored out of his mind, this bot will make your life easier, when you didn't even ask for it!</p>
+              <p class="lead">At this moment, the bot does not work. Only the data collecting module and the bug reporting tool works.</p>
           </div>
-          <div class="col-md-4">
-            <h2>How it works</h2>
-            <p>
-                As soon as you click on start, the program will look on your screen for the fishing region, then, when the fishing
-                mini-game starts, the program will record the fish's position on the screen, saving it together with you
-                "C" clicks (or the any other keyboard button you use).<br> It stops recording as soon as the mini-game closes, and should automaticly send the data to
-                this website.
-            </p>
-          </div>
-          <div class="col-md-4">
-            <h2>I don't want to create an account!</h2>
-            <p>I'm sorry, but if you want to help, you will need one to submit data (use the username from your porn
-                account on reddit, I don't care). It is this way so there is no overwriting on my webserver.</p>
+          <div class="col-md-5">
+            <img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-1.png' %}" alt="Generic placeholder image">
           </div>
         </div>
 
-        <hr>
+        <hr class="featurette-divider">
 
-      </div> <!-- /container -->
+        <div class="row featurette">
+          <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading">Hate those enterprises who harvest your data? <span class="text-muted">Go offline.</span></h2>
+              <p class="lead">Facebook sucks. Fuck those data-hungry big websites.</p>
+              <p class="lead">With this bot you have the option to do everything offline. We allow you to train your own dataset for it without needing to create an account or connecting to the internet.</p>
+              <p class="lead">Also, I don't sell your data because I don't know how to do it, so my ignorance protects your privacy.</p>
+          </div>
+          <div class="col-md-5 order-md-1">
+            <img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-2.png' %}" alt="Generic placeholder image">
+          </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+          <div class="col-md-7">
+            <h2 class="featurette-heading">Please donate you hard-earned money. <span class="text-muted">This was hard to do.</span></h2>
+              <p class="lead">While you were working, we were resting. Yes, we are lazy, but fuck it.</p>
+              <p class="lead">༼ つ ◕_◕ ༽つ Give MONEY ༼ つ ◕_◕ ༽つ</p>
+              <p class="lead">The template we are using had all this space free, so may as well use it for something.</p>
+          </div>
+          <div class="col-md-5">
+            <img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-3.png' %}" alt="Generic placeholder image">
+          </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <!-- /END THE FEATURETTES -->
+
+      </div><!-- /.container -->
+
 {% endblock body %}
-

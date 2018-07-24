@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
 from StardewWeb import views as core_views
+from django.views.defaults import page_not_found
 from django.conf import settings
 from django.conf.urls.static import static
 import Data.views as data_views
@@ -31,6 +32,7 @@ urlpatterns = [
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('accounts/create/', core_views.signup, name='create account'),
+    path('404/', core_views.error_404),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
