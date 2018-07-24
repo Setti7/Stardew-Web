@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY_WEBSITE')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
 
 ALLOWED_HOSTS = ["127.0.0.1", "dedeco.me", "192.168.1.102", "*"]
 
