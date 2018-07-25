@@ -1,18 +1,16 @@
-from django.http import JsonResponse, HttpResponse, FileResponse
-from django.shortcuts import render, redirect, HttpResponseRedirect, get_object_or_404
 import numpy as np
-import json
-from django.contrib.auth.models import User
-from Data.models import UserData, Version
-from Data.forms import UserDataForm
-from api.forms import MessageForm
-from api.models import Message
-from StardewWeb.forms import SignUpForm
-import os, datetime
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views.decorators.http import require_http_methods
+
+from Data.forms import UserDataForm
+from Data.models import UserData, Version
+from StardewWeb.forms import SignUpForm
+from api.forms import MessageForm
+from api.models import Message
 
 
 @ensure_csrf_cookie
@@ -31,8 +29,9 @@ def api_login(request):
 
         except:
             return JsonResponse({'success': False})
+
     else:
-        return HttpResponse('You should not be here, this is only for the api!<br><br><strong>BEGONE THOT!</strong>')
+        return render(request, '404.html')
 
 
 @ensure_csrf_cookie
@@ -56,7 +55,7 @@ def api_create_account(request):
             return JsonResponse({'success': False})
 
     else:
-        return HttpResponse('You should not be here, this is only for the api!<br><br><strong>BEGONE THOT!</strong>')
+        return render(request, '404.html')
 
 
 @login_required
@@ -74,7 +73,6 @@ def score(request):
 def version_control(request):
     version_control = [obj.as_dict() for obj in Version.objects.all()]
     return JsonResponse({"Version Control": version_control})
-
 
 
 @login_required
@@ -112,8 +110,7 @@ def bug_report(request):
             return JsonResponse({'success': False, 'error': 'data sent in wrong format or missing something'})
 
     else:
-        return HttpResponse('You should not be here, this is only for the api!<br><br><strong>BEGONE THOT!</strong>')
-
+        return render(request, '404.html')
 
 
 @login_required
@@ -127,13 +124,14 @@ def data_upload(request):
 
             version = Version.objects.get(version__exact=version)
 
-            if form.is_valid() and (file.name == 'training_data.npy'):# and (file.size > 140000):
+            if form.is_valid() and (file.name == 'training_data.npy'):  # and (file.size > 140000):
 
                 score = len(list(np.load(file)))
-                file = UserData(file=request.FILES['file'], user=request.user, score=score, processed=False, version=version)
+                file = UserData(file=request.FILES['file'], user=request.user, score=score, processed=False,
+                                version=version)
                 file.save()
 
-                return JsonResponse({'success': True}) # status 200
+                return JsonResponse({'success': True})
 
             else:
                 return JsonResponse({
@@ -141,11 +139,10 @@ def data_upload(request):
                     'valid form': form.is_valid(),
                     'file name': file.name,
                     'file size': file.size
-                }) # status 201
+                })
 
     else:
-        return HttpResponse('You should not be here, this is only for the api!<br><br><strong>BEGONE THOT!</strong>')
-
+        return render(request, '404.html')
 
 # def download(request):
 #     file_path = 'Bot-Latest-Version/Globals.py'
