@@ -33,7 +33,8 @@ urlpatterns = [
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('accounts/create/', core_views.signup, name='create account'),
     path('404/', core_views.error_404),
+    path('500/', core_views.error_500),
+    path('400/', core_views.error_400),
+    path('403/', core_views.error_403),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-
-
