@@ -1,16 +1,17 @@
 from . import views
 from django.urls import path
+from rest_framework.authtoken import views as rest_views
+
 
 urlpatterns = [
-    path('score', views.score, name='score'),
-    path('version-control', views.version_control, name='version control'),
-    path('bug-report', views.bug_report, name='bug report'),
-    path('data-upload', views.data_upload, name='data upload'),
-    path('login', views.api_login, name='api login'),
+    path('check-score', views.score_check, name='api score'),
+    path('version-control', views.version_control, name='api version control'),
+    path('bug-report', views.bug_report, name='api bug report'),
+    path('data-upload', views.data_upload, name='api data upload'),
     # path('download', views.download, name='update'),
-    path('create-account', views.api_create_account, name='api create account')
+    path('create-account', views.api_create_account, name='api create account'),
+    path('validate-token', views.validate_token, name='api validate token'),
+    path('get-token', rest_views.obtain_auth_token, name='api get token'),
 
 ]
-
-
 
