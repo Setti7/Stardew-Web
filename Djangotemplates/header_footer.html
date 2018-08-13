@@ -52,7 +52,16 @@
             <li class="nav-item">
                 <a class="nav-link" href="https://github.com/Setti7/SVFB-GUI">GitHub <span class="octicon octicon-mark-github"></span></a>
             </li>
-        </ul>
+
+		</ul>
+
+	  <div style="margin-right: 30%; margin-top: 7px;">
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+			<input type="hidden" name="cmd" value="_s-xclick">
+			<input type="hidden" name="hosted_button_id" value="Z8RXTUZPMPQ4C">
+			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" name="submit" alt="Donate - PayPal">
+		</form>
+	  </div>
 
     {% if not user.is_authenticated %}
         <div class="btn-group my-2 my-sm-0">

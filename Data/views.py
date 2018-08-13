@@ -23,7 +23,7 @@ def ranking(request):
         item_id = request.POST.get('data_id')
         item = UserData.objects.get(id=item_id)
 
-        # There must be a simple verifcation so check if the user who sent the request is the owner of the data
+        # There must be a simple verification so check if the user who sent the request is the owner of the data
         if request.user == item.user:
             file = os.path.join('media', str(item.file))
             if os.path.isfile(file):

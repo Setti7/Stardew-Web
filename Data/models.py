@@ -17,6 +17,7 @@ class UserData(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     processed = models.BooleanField()
     version = models.ForeignKey('Version', on_delete=models.SET_NULL, null=True)
+    # TODO: if fishing session was successful: successful = models.BooleanField()
 
     class Meta:
         ordering = ["-score"]
