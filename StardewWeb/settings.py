@@ -136,7 +136,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30 # 1 month
 

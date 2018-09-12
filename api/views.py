@@ -8,7 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from rest_framework.authtoken.models import Token
 
 from Data.forms import UserDataForm
-from Data.models import UserData, Version
+from Data.models import UserData, Version, Profile
 from StardewWeb.forms import SignUpForm
 from api.forms import MessageForm
 from api.models import Message
@@ -177,6 +177,10 @@ def data_upload(request):
                         file = UserData(file=request.FILES['file'], user=user, score=score, processed=False,
                                         version=version)
                         file.save()
+
+                        profile = Profile.objects.get(user=user)
+                        profile.score += score
+                        profile.save()
 
                         return JsonResponse({'success': True})
 

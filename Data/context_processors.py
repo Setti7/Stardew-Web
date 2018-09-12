@@ -1,11 +1,11 @@
-from .models import UserData
+from .models import UserData, Profile
 from StardewWeb.settings import EMAIL_ADMIN
 
 def score_processor(request):
 
     try:
-        user_scores = UserData.objects.filter(user=request.user)
-        user_total_score = sum([obj.score for obj in user_scores])
+
+        user_total_score = Profile.objects.get(user=request.user).score
 
     except:
         user_total_score = 0

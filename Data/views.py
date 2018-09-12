@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.http import JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from .forms import UserDataForm
 from itertools import groupby
-from .models import UserData
+from .models import UserData, Profile
 import numpy as np
 import json, os
 from datetime import datetime, timedelta, date
@@ -34,30 +34,12 @@ def ranking(request):
 
     # Best Contributors table:
     # ----------------------------------------------------
-    # Get all users from database
-    list_of_users=[]
-    for obj in UserData.objects.all():
-        list_of_users.append(tuple((obj.user.username, obj.score)))
 
-    # Make a dict of every user, with its score sum
-    every_user = {}
-    for key, value in list_of_users:
-        every_user[key] = every_user.get(key, 0) + value
+    # Get best first 18 contributors from db
+    best_friends = Profile.objects.order_by('-score')[:18]
 
-    sorted_users = sorted(every_user, key=every_user.get, reverse=True)[:18]
-
-    # Separate the dict into a list of dicts, so django template engine can work
-    bffs = []
-    for user in sorted_users:
-        bffs.append({"user": user , "score": every_user[user]})
-
-        # Stop loop when the top 18 users are found
-        if len(bffs) >= 18:
-            break
-
-    for n, item in enumerate(bffs):
-        item.update({"position": n+1})
-
+    # Format data to json for frontend
+    bffs = [{'user': profile.user, 'score': profile.score, 'position': i + 1} for i, profile in enumerate(best_friends)]
 
     # Graph data:
     # ----------------------------------------------------
