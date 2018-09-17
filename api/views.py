@@ -3,7 +3,7 @@ import numpy as np
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from rest_framework.authtoken.models import Token
@@ -14,18 +14,19 @@ from StardewWeb.forms import SignUpForm
 from api.forms import MessageForm
 from api.models import Message
 
-@csrf_exempt
 def data_delete(request):
     # POST request should contain list of all the "data_id"s to be deleted separated by commas
 
     if request.method == 'POST':
         item_id = request.POST.get('data_id')
         item = UserData.objects.get(id=item_id)
-        print(item)
 
         # There must be a simple verification so check if the user who sent the request is the owner of the data
-        # if request.user == item.user:
-        #     item.delete()
+        if request.user == item.user:
+            item.delete()
+            return HttpResponse(status=200)
+
+        return HttpResponse(status=500)
 
     else:
         return render(request, '404.html')
