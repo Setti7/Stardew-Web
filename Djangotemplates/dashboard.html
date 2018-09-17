@@ -64,10 +64,6 @@
 
       {% if user_data %}
 
-          <p>Please remove the data collected from fishing sessions that were too simple. For example, if the fish
-      spawns at the bottom of the bar and stay there long enough for you to fish it without you ever doing anything.</p>
-      <p>For now, also remove fishing sessions that are failures. In the future those will not be even saved.</p>
-
         <table class="table table-sm" style="margin-bottom: 0">
           <thead>
             <tr>
@@ -83,16 +79,12 @@
               <td>{{ info.score }}</td>
               <td>
 
-                  <form method="post">
-                      {% csrf_token %}
-                      <input type="hidden" name="data_id" value="{{ info.id }}">
                       <button type="submit" class="btn btn-sm btn-outline-danger">
                         <svg style="margin-top: 4px" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"></path></svg>
                       </button>
                       <a tabindex="0" role="button" class="btn btn-secondary btn-sm" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" data-content="<small>{{ info.id }}</small>">
                       ID
                     </a>
-                  </form>
 
               </td>
             </tr>
