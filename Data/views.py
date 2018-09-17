@@ -17,21 +17,6 @@ def home_page(request):
 # TODO: fazer o post request de deletar dados como javascript, pra não ter que recarregar página
 def ranking(request):
 
-    # Delete button:
-    # ----------------------------------------------------
-    if request.method == 'POST':
-        item_id = request.POST.get('data_id')
-        item = UserData.objects.get(id=item_id)
-
-        # There must be a simple verification so check if the user who sent the request is the owner of the data
-        if request.user == item.user:
-            file = os.path.join('media', str(item.file))
-            if os.path.isfile(file):
-                os.unlink(file)
-                item.delete()
-
-        return HttpResponseRedirect('/ranking')
-
     # Best Contributors table:
     # ----------------------------------------------------
 

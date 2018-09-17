@@ -1,12 +1,10 @@
+import os
 from uuid import uuid4
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-
-# import numpy as np
 
 
 def user_directory_path(instance, filename):
@@ -24,17 +22,6 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"Profile of {str(self.user)}"
-
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
 
 
 class UserData(models.Model):
@@ -78,17 +65,33 @@ class Version(models.Model):
     def __str__(self):
         return "{}".format(str(self.version))
 
-# class Message(models.Model): # Make it accept bigger messages, but cut them when 240 is exceded
-#     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-#     message = models.TextField(max_length=240)
-#     time = models.DateTimeField()
-#
-#     class Meta:
-#          ordering = ['-time']
-#
-#     def as_dict(self):
-#         return {
-#             "User": self.user,
-#             "Time": self.time,
-#             "Message": self.message
-#         }
+
+@receiver(post_save, sender=UserData)
+def update_user_score(sender, instance, **kwargs):
+    profile = Profile.objects.get(user=instance.user)
+    profile.score += instance.score
+    profile.save()
+
+
+@receiver(models.signals.post_delete, sender=UserData)
+def delete_file(sender, instance, *args, **kwargs):
+    """ Deletes files on `post_delete` """
+    if instance.file:
+
+        if os.path.isfile(instance.file.path):
+            profile = Profile.objects.get(user=instance.user)
+            profile.score -= instance.score
+
+            os.remove(instance.file.path)
+            profile.save()
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

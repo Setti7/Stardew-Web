@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -13,6 +14,21 @@ from StardewWeb.forms import SignUpForm
 from api.forms import MessageForm
 from api.models import Message
 
+@csrf_exempt
+def data_delete(request):
+    # POST request should contain list of all the "data_id"s to be deleted separated by commas
+
+    if request.method == 'POST':
+        item_id = request.POST.get('data_id')
+        item = UserData.objects.get(id=item_id)
+        print(item)
+
+        # There must be a simple verification so check if the user who sent the request is the owner of the data
+        # if request.user == item.user:
+        #     item.delete()
+
+    else:
+        return render(request, '404.html')
 
 @csrf_exempt
 def validate_token(request):
@@ -177,10 +193,6 @@ def data_upload(request):
                         file = UserData(file=request.FILES['file'], user=user, score=score, processed=False,
                                         version=version)
                         file.save()
-
-                        profile = Profile.objects.get(user=user)
-                        profile.score += score
-                        profile.save()
 
                         return JsonResponse({'success': True})
 
