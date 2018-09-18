@@ -23,8 +23,8 @@
                 <h1 class="text-shadow-hard">Welcome to Stardew Valley Fishing Bot</h1>
                 <p class="text-shadow-soft">This project is for people like me, who can't fish for shit on this game, so we can have a chance completing it!<br>
                     It's still not complete, we need help collecting data from the game to finish
-                    the machine learning process.<br>Read below how to help!</p>
-				<p class="text-shadow-soft"><a class="btn btn-lg btn-primary" href="https://github.com/Setti7/SVFB-GUI/wiki" role="button">Learn more</a></p>
+                    the machine learning process.<br>Read how it works at the github wiki.</p>
+				<p class="text-shadow-soft"><a id='learn-more-btn' class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
 
               </div>
             </div>
@@ -68,7 +68,7 @@
       ================================================== -->
       <!-- Wrap the rest of the page in another container to center all the content. -->
 
-      <div class="container marketing">
+      <div id='scroll-here' class="container marketing">
 
         <!-- Three columns of text below the carousel -->
 
@@ -93,10 +93,9 @@
 
         <div class="row featurette">
           <div class="col-md-7 order-md-2">
-            <h2 class="featurette-heading">Hate those enterprises who harvest your data? <span class="text-muted">Go offline.</span></h2>
-              <p class="lead">Facebook sucks. Fuck those data-hungry big websites.</p>
+            <h2 class="featurette-heading">Want to do it yourself? <span class="text-muted">Go offline.</span></h2>
               <p class="lead">With this bot you have the option to do everything offline. We allow you to train your own dataset for it without needing to create an account or connecting to the internet.</p>
-              <p class="lead">Also, I don't sell your data because I don't know how to do it, so my ignorance protects your privacy.</p>
+              <p class="lead">Also, if you do send data to our servers to help train the bot, you can manage it all on the "ranking" page while logged in.</p>
           </div>
           <div class="col-md-5 order-md-1">
             <img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-2.png' %}">
@@ -123,3 +122,18 @@
       </div><!-- /.container -->
 
 {% endblock body %}
+
+{% block end_script %}
+
+<script>
+
+$("#learn-more-btn").click(function() {
+    $('html,body').animate({
+        scrollTop: $("#scroll-here").offset().top},
+        'slow');
+});
+
+</script>
+
+
+{% endblock end_script%}

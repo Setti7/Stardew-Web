@@ -5,7 +5,7 @@
 <div class="container-fluid">
   <div class="row">
 
-      <nav class="col-md-3 d-none d-md-block bg-light sidebar pt-3 px-4">
+      <nav class="col-md-3 d-md-block bg-light sidebar pt-3 px-4">
           <div class="sidebar-sticky">
             <h2 id="Hall">Hall of Fame</h2>
       <div id="hall-of-fame" class="table-responsive">
@@ -21,7 +21,7 @@
           {% for user in bffs_dict %}
             <tr>
               <td>{{ user.position }}</td>
-              <td>{{ user.user }}</td>
+              <td>{% if user.position == 1 %}🥇{% elif user.position == 2 %}🥈{% elif user.position == 3 %}🥉{% elif user.position <= 5 %}🎉{% elif user.position <= 10 %}🎊{% endif %} {{ user.user }}</td>
               <td>{{ user.score }}</td>
             </tr>
           {% endfor %}
@@ -96,7 +96,7 @@
         </table>
         {% else %}
           <hr>
-          <p>You haven't submitted any data yet. Download the desktop client <a href="#">here</a> to start.</p>
+          <p>You haven't submitted any data yet. Download the desktop client <a href="https://github.com/Setti7/SVFB-GUI/releases">here</a> to start.</p>
         {% endif %}
     </div>
 
@@ -245,11 +245,5 @@ $(document).ready(function () {
 	});
 
 });
-
-// Enabing all popovers
-$(function () {
-  $('[data-toggle="popover"]').popover()
-});
-
 </script>
 {% endblock end_script %}

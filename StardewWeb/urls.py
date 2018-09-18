@@ -25,7 +25,7 @@ import Data.views as data_views
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/home')),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('home/', data_views.home_page, name='home page'),
     path('ranking/', include('Data.urls'), name='ranking'),
     path('api/', include('api.urls'), name='api'),
@@ -40,3 +40,7 @@ urlpatterns = [
     path('donation/canceled', core_views.donation_canceled),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+admin.site.site_header = "SVFB Admin"
+admin.site.site_title = "SVFB Admin Portal"
+admin.site.index_title = "Welcome to SVFB"
