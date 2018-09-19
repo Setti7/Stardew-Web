@@ -28,22 +28,22 @@ def ranking(request):
 
     # Graph data:
     # ----------------------------------------------------
-    last_week = datetime.now() - timedelta(days=7)
 
-    # Creates a list of dicts of all users' scores, with upload date. Eg: [{'date': 2018-1-22, 'score':122}, {'date': 2018-1-22, 'score':1212}, {'date': 2018-1-23, 'score':245}]
-    lst = [{
-            "date": str(obj.uploaded_at.date()),
-            "score": obj.score
-            }
-            for obj in UserData.objects.filter(uploaded_at__gt=last_week).order_by('uploaded_at')
-        ]
+    # Creating list of days of this week
+    days_this_week = []
+    today = datetime.today().date()
+    for i in range(8):
+        date = (today + timedelta(days=-i))
+        days_this_week.append(str(date))
 
-    # Group the scores from the list of dicts, with respect to the date.
-    data = {}
-    for key, value in groupby(lst, key=lambda x: x['date']):
-        scores = [dict["score"] for dict in list(value)]
-        data[key] = sum(scores)
+    # Creating list of scores from this week
+    score_this_week = []
+    for i in range(8):
+        score = sum([obj.score for obj in UserData.objects.filter(uploaded_at__date=datetime.today().date() - timedelta(days=i))])
+        score_this_week.append(score)
 
+    # Zipping scores and dates into one dict
+    data = dict(zip(days_this_week, score_this_week))
 
     # Progress Bar data:
     # ----------------------------------------------------
