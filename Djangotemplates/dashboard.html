@@ -1,241 +1,329 @@
 {% extends 'header_footer.html' %}
 
 {% block body %}
+	{% load template_has_group %}
 
-<div class="container-fluid">
-  <div class="row">
+	<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
+		<div class="row">
 
-      <nav class="col-md-3 d-md-block bg-light sidebar pt-3 px-4">
-          <div class="sidebar-sticky">
-            <h2 id="Hall">Hall of Fame</h2>
-      <div id="hall-of-fame" class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for user in bffs_dict %}
-            <tr>
-              <td>{{ user.position }}</td>
-              <td>{{ user.user }} {% if user.position == 1 %}🥇{% elif user.position == 2 %}🥈{% elif user.position == 3 %}🥉{% endif %}</td>
-              <td>{{ user.score }}</td>
-            </tr>
-          {% endfor %}
+			<nav class="col-md-3 d-md-block bg-light sidebar pt-3 px-4">
 
-          </tbody>
-        </table>
+				<div class="sidebar-sticky">
+					<h2 id="Hall">Hall of Fame</h2>
+					<div id="hall-of-fame" class="table-responsive">
+						<table class="table table-striped table-sm">
+							<thead>
+							<tr>
+								<th>#</th>
+								<th>Name</th>
+								<th>Score</th>
+							</tr>
+							</thead>
+							<tbody>
+							{% for user in bffs_dict %}
+								<tr>
 
-      </div>
-          </div>
-        </nav>
+									<td>{{ user.position }}</td>
 
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-9 pt-3 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Frames per day on this week:</h1>
+									{% if user.user|has_group:"donor" %}
+										<td data-toggle="tooltip" data-placement="left"
+											title="Thanks for your donation!">🛡️
+									{% elif user.user|has_group:"staff" %}
+										<td data-toggle="tooltip" data-placement="left"
+											title="I'm a staff member!">🗝️
+									{% else %}
+										<td>
+									{% endif %}{{ user.user }}{% if user.position == 1 %}
+									🥇{% elif user.position == 2 %} 🥈{% elif user.position == 3 %} 🥉{% endif %}</td>
+									<td>{{ user.score }}</td>
 
-        <div class="btn-toolbar mb-2 mb-md-0">
-            {% if user.is_authenticated %}
-                <button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal" data-target="#accnt">
-                    Manage your data
-                </button>
-            {% else %}
-                <button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal" data-target="#how-to-help">
-                    How to Help
-                </button>
-            {% endif %}
+								</tr>
+							{% endfor %}
 
-        </div>
-      </div>
+							</tbody>
+						</table>
 
-      <canvas class="my-4" id="Chart" width="950" height="500"></canvas>
+					</div>
+				</div>
+			</nav>
 
-{% if user.is_authenticated %}
-<!-- Modal Data Submitted -->
-<div class="modal fade" id="accnt" tabindex="-1" role="dialog" aria-labelledby="accntlabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
+			<main role="main" class="col-md-9 ml-sm-auto col-lg-9 pt-3 px-4">
 
-            <h2 id="Hall">Data Submitted:</h2>
+				<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
 
-	<div id="data_list">
-      {% if user_data %}
-			  <table class="table table-sm" style="margin-bottom: 0">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Score</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for info in user_data %}
-            <tr>
-              <td>{{ info.uploaded_at }}</td>
-              <td>{{ info.score }}</td>
-              <td>
+					<h2>Frames per day on this week:</h2>
 
-				<form id="{{ info.id }}" class="delete-data-form" method="post">
-					{% csrf_token %}
-					<input type="hidden" name="data_id" value="{{ info.id }}">
-					<button type="submit" class="btn btn-sm btn-outline-danger">
-						<svg style="margin-bottom: 3px" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"></path></svg>
-					</button>
-					<a tabindex="0" role="button" class="btn btn-secondary btn-sm" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" data-content="<small>{{ info.id }}</small>">ID</a>
-				</form>
+					<div class="btn-toolbar mb-2 mb-md-0">
 
-              </td>
-            </tr>
-          {% endfor %}
+						{% if user.is_authenticated %}
+							<button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal"
+									data-target="#accnt">
+								Manage your data
+							</button>
+						{% else %}
+							<button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal"
+									data-target="#how-to-help">
+								How to Help
+							</button>
+						{% endif %}
 
-          </tbody>
-        </table>
-        {% else %}
-          <hr>
-          <p>You haven't submitted any data yet. Download the desktop client <a href="https://github.com/Setti7/SVFB-GUI/releases">here</a> to start.</p>
-        {% endif %}
-    </div>
+						<button id='more-stats-btn' type="button" class="btn btn-light">
+							More Statistics
+						</button>
 
-      </div>
+					</div>
+				</div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<canvas class="my-4" id="Chart" width="950" height="500"></canvas>
 
-      </div>
-    </div>
-  </div>
-</div>
+				<div id="scroll-here" class="card">
+					<div class="card-header" style="text-align: center">
+						Here are some numbers:
+					</div>
 
-    </main>
-  </div>
-</div>
+					<div class="card-body">
+						<p class="card-text">
+							Until now, <strong>{{ score_sum }}</strong> frames  were collected, resulting in
+							<strong>{{ total_time_played }} minutes</strong> of gameplay in total.
+						</p>
+						<p class="card-text">
+							There are <strong>{{ n_users }}</strong> registered users, with an average score of
+							<strong>{{ avg_user_score }}</strong>.
+						</p>
+						<p class="card-text">
+							<strong>{{ avg_session_score }} points</strong> is the average score earned by 1 fishing
+							session.
+						</p>
+						<p class="card-text">
+							<strong>{{ avg_session_time }} seconds</strong> is the average time of 1 fishing session.
+						</p>
+						<p class="card-text">
+							The top 3 contributors account for <strong>{{ top_3_score_percent }}%</strong> of the total
+							score.
+						</p>
+					</div>
+				</div>
+			</main>
 
-{% else %}
+				{% if user.is_authenticated %}
+					<!-- Modal Data Submitted -->
+					<div class="modal fade" id="accnt" tabindex="-1" role="dialog" aria-labelledby="accntlabel"
+						 aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-body">
 
-<!-- Modal Data Upload -->
-<div class="modal fade" id="how-to-help" tabindex="-1" role="dialog" aria-labelledby="how-to-help-label" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h6 class="modal-title" id="how-to-help-label">How to help</h6>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    <div class="modal-body">
+									<div>
+										<h2 style="float: left" id="Hall">Data Submitted: {{ help_percent }}% of total
+											score</h2>
+										<button style="float: right;" type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
 
-  <p>If you want to help, you need to download the desktop client. It will automaticaly submit the data collected to this
-      website. When logged in, this button will be changed to "manage your data", so you can control better what you
-      upload.<br><br>
-      Download the client <a href="https://github.com/Setti7/SVFB-GUI/releases">here</a>.
-  </p>
+									{% if user_data %}
+										<p style="clear: both" class="text-muted">
+											There is no need to delete failed attempts at fishing, as the program
+											already does this automaticaly.
+										</p>
 
-    </div>
-      <div class="modal-footer">
-            <a class="btn btn-primary" href="{% url 'create account' %}?next={{request.path}}">Create account</a>
-              <a class="btn btn-primary" href="{% url 'login' %}?next={{request.path}}">Login</a>
-      </div>
-    </div>
-  </div>
-</div>
+										<table class="table table-sm" style="margin-bottom: 0">
+											<thead>
+											<tr>
+												<th>Date</th>
+												<th>Score</th>
+												<th>Actions</th>
+											</tr>
+											</thead>
+											<tbody>
+											{% for info in user_data %}
+												<tr>
+													<td>{{ info.uploaded_at }}</td>
+													<td>{{ info.score }}</td>
+													<td>
 
-{% endif %}
+														<form id="{{ info.id }}" class="delete-data-form" method="post">
+															{% csrf_token %}
+															<input type="hidden" name="data_id" value="{{ info.id }}">
+															<button type="submit" class="btn btn-sm btn-outline-danger">
+																<svg style="margin-bottom: 3px" viewBox="0 0 12 16"
+																	 version="1.1" width="12" height="16"
+																	 aria-hidden="true">
+																	<path fill-rule="evenodd"
+																		  d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"></path>
+																</svg>
+															</button>
+															<a tabindex="0" role="button"
+															   class="btn btn-secondary btn-sm" data-container="body"
+															   data-html="true" data-toggle="popover"
+															   data-placement="bottom"
+															   data-content="<small>{{ info.id }}</small>">ID</a>
+														</form>
 
-{% block footer %}
-<!-- This is here just to overwrite the standard footer from header_footer.html-->
+													</td>
+												</tr>
+											{% endfor %}
 
-{% endblock footer %}
-<!-- Graphs -->
+											</tbody>
+										</table>
+									{% else %}
+										<hr>
+										<p>You haven't submitted any data yet. Download the desktop client <a
+												href="https://github.com/Setti7/SVFB-GUI/releases">here</a> to start.
+										</p>
+									{% endif %}
 
-{% load static %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js" integrity="sha256-t3+U9BqykoMN9cqZmJ5Z53TvPv4V7S9AmjUcIWNNyxo=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js" integrity="sha256-xljKCznmrf+eJGt+Yxyo+Z3KHpxlppBZSjyDlutbOh0=" crossorigin="anonymous"></script>
+								</div>
 
-<!--https://stackoverflow.com/questions/31092489/chart-js-draw-horizontal-line-->
-<script>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
-// Percentage bar data
-var score_sum = "{{ score_sum|safe }}";
+								</div>
+							</div>
+						</div>
+					</div>
 
-var percentage = function(){
-    document.getElementById('hundredThousandProBar')['aria-valuenow'] = (score_sum/1000);
-};
+					</main>
+					</div>
+					</div>
 
-// Chart data
-function getDayOfWeek(date) {
-  var dayOfWeek = new Date(date).getDay();
-  return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
-}
+				{% else %}
 
-var chartData = JSON.parse('{{ data|safe }}');
+					<!-- Modal Data Upload -->
+					<div class="modal fade" id="how-to-help" tabindex="-1" role="dialog"
+						 aria-labelledby="how-to-help-label" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h6 class="modal-title" id="how-to-help-label">How to help</h6>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
 
-var today = getDayOfWeek(Date.today());
-var _1d = getDayOfWeek(Date.today().add(-1).day());
-var _2d = getDayOfWeek(Date.today().add(-2).day());
-var _3d = getDayOfWeek(Date.today().add(-3).day());
-var _4d = getDayOfWeek(Date.today().add(-4).day());
-var _5d = getDayOfWeek(Date.today().add(-5).day());
-var _6d = getDayOfWeek(Date.today().add(-6).day());
+									<p>If you want to help, you need to download the desktop client. It will
+										automaticaly submit the data collected to this
+										website. When logged in, this button will be changed to "manage your data", so
+										you can control better what you
+										upload.<br><br>
+										Download the client <a
+												href="https://github.com/Setti7/SVFB-GUI/releases">here</a>.
+									</p>
 
-var values = Object.keys(chartData).map(function(key) {
-    return chartData[key];});
+								</div>
+								<div class="modal-footer">
+									<a class="btn btn-primary"
+									   href="{% url 'create account' %}?next={{ request.path }}">Create account</a>
+									<a class="btn btn-primary"
+									   href="{% url 'login' %}?next={{ request.path }}">Login</a>
+								</div>
+							</div>
+						</div>
+					</div>
 
-// Generating chart
-var ctx = document.getElementById("Chart");
+				{% endif %}
 
-var myChart = new Chart(ctx, {
-type: 'line',
-data: {
-  labels: [today, _6d, _5d, _4d, _3d, _2d, _1d, today],
-  datasets: [{
-    data: values.reverse(),
-    lineTension: 0,
-    backgroundColor: 'transparent',
-    borderColor: '#007bff',
-    borderWidth: 4,
-    pointBackgroundColor: '#007bff'
-  }]
-},
-options: {
-  scales: {
-    yAxes: [{
-      ticks: {
-        beginAtZero: false
-      }
-    }]
-  },
-  legend: {
-    display: false,
-  }
-}
-});
-</script>
+	{% block footer %}
+		<!-- This is here just to overwrite the standard footer from header_footer.html-->
+
+	{% endblock footer %}
+	<!-- Graphs -->
+
+	{% load static %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"
+			integrity="sha256-t3+U9BqykoMN9cqZmJ5Z53TvPv4V7S9AmjUcIWNNyxo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"
+			integrity="sha256-xljKCznmrf+eJGt+Yxyo+Z3KHpxlppBZSjyDlutbOh0=" crossorigin="anonymous"></script>
+
+	<!--https://stackoverflow.com/questions/31092489/chart-js-draw-horizontal-line-->
+	<script>
+
+        // Chart data
+        function getDayOfWeek(date) {
+            var dayOfWeek = new Date(date).getDay();
+            return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+        }
+
+        var chartData = JSON.parse('{{ data|safe }}');
+
+        var today = getDayOfWeek(Date.today());
+        var _1d = getDayOfWeek(Date.today().add(-1).day());
+        var _2d = getDayOfWeek(Date.today().add(-2).day());
+        var _3d = getDayOfWeek(Date.today().add(-3).day());
+        var _4d = getDayOfWeek(Date.today().add(-4).day());
+        var _5d = getDayOfWeek(Date.today().add(-5).day());
+        var _6d = getDayOfWeek(Date.today().add(-6).day());
+
+        var values = Object.keys(chartData).map(function (key) {
+            return chartData[key];
+        });
+
+        // Generating chart
+        var ctx = document.getElementById("Chart");
+
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [today, _6d, _5d, _4d, _3d, _2d, _1d, today],
+                datasets: [{
+                    data: values.reverse(),
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#007bff',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#007bff'
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }]
+                },
+                legend: {
+                    display: false,
+                }
+            }
+        });
+	</script>
 
 {% endblock body %}
 
 
 {% block end_script %}
-<script>
-$(document).ready(function () {
-	$('form').on('submit', function (e) {
-		e.preventDefault();
-		var theForm = $(this);
-		$.ajax({
-			type: 'POST',
-			url: '{% url "api data delete" %}',
-			data: $(theForm).serialize(),
-			success: function () {
-				theForm.parents('tr').fadeOut();
-				$("#user-score-div").load(location.href + " #user-score-div");
-				$("#hall-of-fame").load(location.href + " #hall-of-fame");
-			}
-		});
-	});
+	<script>
 
-});
-</script>
+		$("#more-stats-btn").click(function () {
+            $('html,body').animate({
+                    scrollTop: $("#scroll-here").offset().top
+                },
+                'slow');
+        });
+
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                var theForm = $(this);
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "api data delete" %}',
+                    data: $(theForm).serialize(),
+                    success: function () {
+                        theForm.parents('tr').fadeOut();
+                        $("#user-score-div").load(location.href + " #user-score-div");
+                        $("#hall-of-fame").load(location.href + " #hall-of-fame");
+                    }
+                });
+            });
+
+        });
+	</script>
 {% endblock end_script %}

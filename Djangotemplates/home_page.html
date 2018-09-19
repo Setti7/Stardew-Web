@@ -1,139 +1,162 @@
 {% extends 'header_footer.html' %}
 
 {% block extra_static %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/carousel.css' %}">
 {% endblock extra_static %}
 
 {% block body %}
-    <main role="main">
+	<main role="main">
 
 
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner" role="listbox">
-          <!-- Slide One - Set the background image for this slide in the line below -->
-          <div class="carousel-item active" style="background-image: url('{% static 'img/slide 1.png' %}')">
-            <div class="container">
-              <div class="carousel-caption">
-                <h1 class="text-shadow-hard">Welcome to Stardew Valley Fishing Bot</h1>
-                <p class="text-shadow-soft">This project is for people like me, who can't fish for shit on this game, so we can have a chance completing it!<br>
-                    It's still not complete, we need help collecting data from the game to finish
-                    the machine learning process.<br>Read how it works at the github wiki.</p>
-				<p class="text-shadow-soft"><a id='learn-more-btn' class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+			<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+			<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+			<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+		</ol>
+		<div class="carousel-inner" role="listbox">
+			<!-- Slide One - Set the background image for this slide in the line below -->
+			<div class="carousel-item active" style="background-image: url('{% static 'img/slide 1.png' %}')">
+				<div class="container">
+					<div class="carousel-caption">
+						<h1 class="text-shadow-hard">Welcome to Stardew Valley Fishing Bot</h1>
+						<p class="text-shadow-soft">This project is for people like me, who can't fish for shit on this
+							game, so we can have a chance completing it!<br>
+							It's still not complete, we need help collecting data from the game to finish
+							the machine learning process.<br>Read how it works at the github wiki.</p>
+						<p class="text-shadow-soft"><a id='learn-more-btn' class="btn btn-lg btn-primary" href="#"
+													   role="button">Learn more</a></p>
 
-              </div>
-            </div>
-          </div>
-          <!-- Slide Two - Set the background image for this slide in the line below -->
-          <div class="carousel-item" style="background-image: url('{% static 'img/slide 2 - new.png' %}')">
-            <div class="container">
-              <div class="carousel-caption">
-                <h1 class="text-shadow-hard">Help Gathering Data</h1>
-                  <p class="text-shadow-soft">Machines are dumb, they need a lot of data to be trained on. A convolutional neural network (the machine learning we are using) is no exception, it needs a lot of images to be successfully trained on, ideally, more than 1 million.</p>
-                    <p class="text-shadow-soft">So help us out! Download the desktop client and start collecting!</p>
-                <p class="text-shadow-soft"><a class="btn btn-lg btn-primary" href="https://github.com/Setti7/SVFB-GUI/releases" role="button">Download</a></p>
-              </div>
-            </div>
-          </div>
-          <!-- Slide Three - Set the background image for this slide in the line below -->
-          <div class="carousel-item" style="background-image: url('{% static 'img/slide 3 - new.png' %}')">
-            <div class="container">
-              <div class="carousel-caption">
-                <h1 class="text-shadow-hard">Be the best at something you should not care about!</h1>
-                <p class="text-shadow-soft">The best at what you ask? The best at collecting data!<br>
-                    Go to the ranking page and checkout my bestfriends, those who contributed more towards the 1 million frames goal!</p>
-                <p class="text-shadow-soft"><a class="btn btn-primary btn-lg" href="{% url 'ranking' %}" role="button">Visit Ranking</a></p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-</div>
-
-
-
-      <!-- Marketing messaging and featurettes
-      ================================================== -->
-      <!-- Wrap the rest of the page in another container to center all the content. -->
-
-      <div id='scroll-here' class="container marketing">
-
-        <!-- Three columns of text below the carousel -->
-
+					</div>
+				</div>
+			</div>
+			<!-- Slide Two - Set the background image for this slide in the line below -->
+			<div class="carousel-item" style="background-image: url('{% static 'img/slide 2 - new.png' %}')">
+				<div class="container">
+					<div class="carousel-caption">
+						<h1 class="text-shadow-hard">Help Gathering Data</h1>
+						<p class="text-shadow-soft">Machines are dumb, they need a lot of data to be trained on. A
+							convolutional neural network (the machine learning we are using) is no exception, it needs a
+							lot of images to be successfully trained on, ideally, more than 1 million.</p>
+						<p class="text-shadow-soft">So help us out! Download the desktop client and start
+							collecting!</p>
+						<p class="text-shadow-soft"><a class="btn btn-lg btn-primary"
+													   href="https://github.com/Setti7/SVFB-GUI/releases" role="button">Download</a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<!-- Slide Three - Set the background image for this slide in the line below -->
+			<div class="carousel-item" style="background-image: url('{% static 'img/slide 3 - new.png' %}')">
+				<div class="container">
+					<div class="carousel-caption">
+						<h1 class="text-shadow-hard">Be the best at something you should not care about!</h1>
+						<p class="text-shadow-soft">The best at what you ask? The best at collecting data!<br>
+							Go to the ranking page and checkout my bestfriends, those who contributed more towards the 1
+							million frames goal!</p>
+						<p class="text-shadow-soft"><a class="btn btn-primary btn-lg" href="{% url 'ranking' %}"
+													   role="button">Visit Ranking</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>
 
 
-        <!-- START THE FEATURETTES -->
 
-        <hr class="featurette-divider">
+	<!-- Marketing messaging and featurettes
+    ================================================== -->
+	<!-- Wrap the rest of the page in another container to center all the content. -->
 
-        <div class="row featurette">
-          <div class="col-md-7">
-            <h2 class="featurette-heading">Love playing games? <span class="text-muted">Don't worry, with this, you will never need to play again!</span></h2>
-              <p class="lead">Made by someone who loves Stardew Valley, but was bored out of his mind, this bot will make your life easier, when you didn't even ask for it!</p>
-              <p class="lead">At this moment, the bot does not work. Only the data collecting module and the bug reporting tool works.</p>
-          </div>
-          <div class="col-md-5">
-            <img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-1.png' %}">
-          </div>
-        </div>
+	<div id='scroll-here' class="container marketing">
 
-        <hr class="featurette-divider">
+		<!-- Three columns of text below the carousel -->
 
-        <div class="row featurette">
-          <div class="col-md-7 order-md-2">
-            <h2 class="featurette-heading">Want to do it yourself? <span class="text-muted">Go offline.</span></h2>
-              <p class="lead">With this bot you have the option to do everything offline. We allow you to train your own dataset for it without needing to create an account or connecting to the internet.</p>
-              <p class="lead">Also, if you do send data to our servers to help train the bot, you can manage it all on the "ranking" page while logged in.</p>
-          </div>
-          <div class="col-md-5 order-md-1">
-            <img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-2.png' %}">
-          </div>
-        </div>
 
-        <hr class="featurette-divider">
+		<!-- START THE FEATURETTES -->
 
-        <div class="row featurette">
-          <div class="col-md-7">
-            <h2 class="featurette-heading">Please donate you hard-earned money. <span class="text-muted">This was hard to do.</span></h2>
-              <p class="lead">This website costs $6 per month to stay online. Please help us, as we are poor starving Brazilian students.</p>
-              <p class="lead">Just click the button on the navigation bar to donate via PayPal!</p>
-          </div>
-          <div class="col-md-5">
-            <img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-3.png' %}">
-          </div>
-        </div>
+		<hr class="featurette-divider">
 
-        <hr class="featurette-divider">
+		<div class="row featurette">
+			<div class="col-md-7">
+				<h2 class="featurette-heading">Love playing games? <span class="text-muted">Don't worry, with this, you will never need to play again!</span>
+				</h2>
+				<p class="lead">Made by someone who loves Stardew Valley, but was bored out of his mind, this bot will
+					make your life easier, when you didn't even ask for it!</p>
+				<p class="lead">At this moment, the bot does not work. Only the data collecting module and the bug
+					reporting tool works.</p>
+				<p class="lead">
+					<strong>See tips, how it works and more at the github
+						<a href="https://github.com/Setti7/SVFB-GUI/wiki">wiki!</a>
+					</strong>
+				</p>
+			</div>
+			<div class="col-md-5">
+				<img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-1.png' %}">
+			</div>
+		</div>
 
-        <!-- /END THE FEATURETTES -->
+		<hr class="featurette-divider">
 
-      </div><!-- /.container -->
+		<div class="row featurette">
+			<div class="col-md-7 order-md-2">
+				<h2 class="featurette-heading">Want to do it yourself? <span class="text-muted">Go offline.</span></h2>
+				<p class="lead">With this bot you have the option to do everything offline. We allow you to train your
+					own model for it without needing to create an account or connecting to the internet.</p>
+				<p class="lead">Also, if you do send data to our servers to help train the bot, you can manage it all on
+					the "ranking" page while logged in.</p>
+			</div>
+			<div class="col-md-5 order-md-1">
+				<img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-2.png' %}">
+			</div>
+		</div>
+
+		<hr class="featurette-divider">
+
+		<div class="row featurette">
+			<div class="col-md-7">
+				<h2 class="featurette-heading">Please donate you hard-earned money. <span class="text-muted">This was hard to do.</span>
+				</h2>
+				<p class="lead">This website costs $6 per month to stay online. Please help us, as we are poor starving
+					Brazilian students.</p>
+				<p class="lead">Just click the button on the navigation bar to donate via PayPal and you will
+					<strong>receive a nice emoji next to your username.</strong>
+				</p>
+			</div>
+			<div class="col-md-5">
+				<img class="featurette-image img-fluid mx-auto" src="{% static 'img/placeholder-3.png' %}">
+			</div>
+		</div>
+
+		<hr class="featurette-divider">
+
+		<!-- /END THE FEATURETTES -->
+
+	</div><!-- /.container -->
 
 {% endblock body %}
 
 {% block end_script %}
 
-<script>
+	<script>
 
-$("#learn-more-btn").click(function() {
-    $('html,body').animate({
-        scrollTop: $("#scroll-here").offset().top},
-        'slow');
-});
+        $("#learn-more-btn").click(function () {
+            $('html,body').animate({
+                    scrollTop: $("#scroll-here").offset().top
+                },
+                'slow');
+        });
 
-</script>
+	</script>
 
 
-{% endblock end_script%}
+{% endblock end_script %}

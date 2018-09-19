@@ -4,19 +4,41 @@
 
 {% block body %}
 
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
-		  <h1 align="center" style="color: #dc3545; margin: 45px">Thanks for the donation.</h1>
-            <p class="text-muted" align="center">This is on a list somewhere to be fixed. Anyway, you probably typed "www" in the URL. Don't do that. We are in 2018.</p>
-            <p style="text-shadow: 1px 1px 3px #000000" align="center"><a class="btn btn-lg btn-primary" href="http://127.0.0.1/home" role="button">Go to home page</a></p>
-            <p class="lead" align="center">Contact us if you think you did something wrong.<br>Send email to: {{ admin_email }}</p>
-		  <hr>
-      </div>
-    </div>
-  </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
+				<h1 align="center" style="color: #dc3545; margin: 45px">Thanks for the donation!</h1>
+
+				<p class="lead">Now whenever your name shows up it will have a special emoji before it to show off your
+					generosity to the others.
+				</p>
+				<p class="lead">
+					Anyway, thanks a lot for your help, it really is great to know that someone liked our project
+					so much to donate a little bit to us! You are awesome!
+				</p>
+				<p class="lead">
+					Every penny made from donations are used to pay the monthly bill to our servers. $6 is enough for
+					approximately one month.
+				</p>
+
+				<hr>
+
+				<p style="text-shadow: 1px 1px 3px #000000" align="center">
+					<a class="btn btn-lg btn-primary" href="http://127.0.0.1/home" role="button">
+						Go to home page
+					</a>
+				</p>
+
+				<p class="text-muted" align="center">Contact us if something is wrong.<br>Send email
+					to: {{ admin_email }}
+				</p>
+				<hr>
+
+			</div>
+		</div>
+	</div>
 {% endblock body %}
 
 {% block footer %}
-{#This is here to overwrite the standard footer#}
+	{#This is here to overwrite the standard footer#}
 {% endblock footer %}

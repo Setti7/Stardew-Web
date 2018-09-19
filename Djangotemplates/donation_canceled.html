@@ -1,22 +1,45 @@
 {% extends 'header_footer.html' %}
 
-{% block title %}<title>Fishing Bot - 404</title>{% endblock title %}
+{% block title %}<title>Fishing Bot - Thanks!</title>{% endblock title %}
 
 {% block body %}
 
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
-		  <h1 align="center" style="color: #dc3545; margin: 45px">Error 400: Bad Request</h1>
-            <p class="text-muted" align="center">This is on a list somewhere to be fixed. Anyway, you probably typed "www" in the URL. Don't do that. We are in 2018.</p>
-            <p style="text-shadow: 1px 1px 3px #000000" align="center"><a class="btn btn-lg btn-primary" href="http://127.0.0.1/home" role="button">Go to home page</a></p>
-            <p class="lead" align="center">Contact us if you think you did something wrong.<br>Send email to: {{ admin_email }}</p>
-		  <hr>
-      </div>
-    </div>
-  </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
+				<h1 align="center" style="color: #dc3545; margin: 45px">We are sorry it didn't work out for us...</h1>
+
+				<p class="lead">
+					It seems you clicked the wrong button or you decided not to donate to us after all. Great choice to
+					be honestly. If you have the money there are better things to do with it anyway.
+				</p>
+				<p class="lead">But let me show you what you are missing out: if you donated to us you would've received
+					the <strong>best emoji ever alongside your username!</strong>
+				</p>
+				<p class="lead">
+					Just kidding, you do whatever you want with your green notes, but we would like you to know that
+					every penny made from donations are used to pay the monthly bill to our servers. $6 is enough for
+					approximately one month.
+				</p>
+
+				<hr>
+
+				<p style="text-shadow: 1px 1px 3px #000000" align="center">
+					<a class="btn btn-lg btn-primary" href="http://127.0.0.1/home" role="button">
+						Go to home page
+					</a>
+				</p>
+
+				<p class="text-muted" align="center">Contact us if something is wrong.<br>Send email
+					to: {{ admin_email }}
+				</p>
+				<hr>
+
+			</div>
+		</div>
+	</div>
 {% endblock body %}
 
 {% block footer %}
-{#This is here to overwrite the standard footer#}
+	{#This is here to overwrite the standard footer#}
 {% endblock footer %}
