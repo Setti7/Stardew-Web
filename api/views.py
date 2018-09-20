@@ -103,8 +103,7 @@ def score_check(request):
                 token = Token.objects.get(key=key)
 
                 if token.user == user:
-                    user_scores = UserData.objects.filter(user=user)
-                    user_total_score = sum([obj.score for obj in user_scores])
+                    user_total_score = Profile.objects.get(user=user).score
 
                 else:
                     user_total_score = 0

@@ -1,26 +1,22 @@
-from django.shortcuts import render, redirect, HttpResponseRedirect
-from django.http import JsonResponse, Http404
-from django.contrib.auth.decorators import login_required
-from django.db.models import Sum, Count, Avg
-from .forms import UserDataForm
-from itertools import groupby
+import json
+import random
+from datetime import datetime, timedelta
+
+from django.db.models import Sum, Avg, Max
+from django.shortcuts import render
+
 from .models import UserData, Profile
-import numpy as np
-import json, os
-from datetime import datetime, timedelta, date
-from StardewWeb.settings import MEDIA_ROOT
 
 
 def home_page(request):
     return render(request, 'home_page.html', context={})
 
-# TODO: fazer o post request de deletar dados como javascript, pra não ter que recarregar página
-def ranking(request):
 
+def ranking(request):
     # Best Contributors table:
     # ----------------------------------------------------
 
-    # Get best first 18 contributors from db
+    # Get best first 25 contributors from db
     best_friends = Profile.objects.order_by('-score')[:25]
 
     # Format data to json for frontend
@@ -39,7 +35,8 @@ def ranking(request):
     # Creating list of scores from this week
     score_this_week = []
     for i in range(8):
-        score = sum([obj.score for obj in UserData.objects.filter(uploaded_at__date=datetime.today().date() - timedelta(days=i))])
+        score = sum([obj.score for obj in
+                     UserData.objects.filter(uploaded_at__date=datetime.today().date() - timedelta(days=i))])
         score_this_week.append(score)
 
     # Zipping scores and dates into one dict
@@ -48,12 +45,11 @@ def ranking(request):
     # Progress Bar data:
     # ----------------------------------------------------
     score_sum = UserData.objects.aggregate(Sum('score'))['score__sum']
-    total_time_played = round(score_sum/3600, 2)
+    total_time_played = round(score_sum / 3600, 2)
     if request.user.is_authenticated:
-        help_percent = round(100*(Profile.objects.get(user=request.user).score)/score_sum, 1)
+        help_percent = round(100 * (Profile.objects.get(user=request.user).score) / score_sum, 1)
     else:
         help_percent = 0
-
 
     # Data Submitted:
     # ----------------------------------------------------
@@ -79,12 +75,22 @@ def ranking(request):
     # Average number of sessions per user
     # ----------------------------------------------------
     avg_session_score = round(UserData.objects.aggregate(Avg('score'))['score__avg'])
-    avg_session_time = round(avg_session_score/60, 2)
+    avg_session_time = round(avg_session_score / 60, 2)
 
     # Top 3 users
     # ----------------------------------------------------
     top_3_score_sum = Profile.objects.order_by('-score')[:3].aggregate(Sum('score'))['score__sum']
-    top_3_score_percent = round(100*top_3_score_sum/score_sum, 2)
+    top_3_score_percent = round(100 * top_3_score_sum / score_sum, 2)
+
+    # Longest fishing session
+    # ----------------------------------------------------
+    max_score = UserData.objects.aggregate(Max('score'))['score__max']
+    max_score_users = UserData.objects.filter(score=max_score)
+
+    rand_user = random.randint(0, len(max_score_users) - 1)
+
+    max_score_user = [user for user in max_score_users][rand_user]
+    longest_session_dict = {'max_score': max_score, 'user': max_score_user, 'time': round(max_score/60, 1)}
 
     return render(request, 'dashboard.html', context={
 
@@ -99,4 +105,5 @@ def ranking(request):
         'avg_session_score': avg_session_score,
         'avg_session_time': avg_session_time,
         'top_3_score_percent': top_3_score_percent,
+        'longest_session': longest_session_dict,
     })

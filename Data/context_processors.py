@@ -3,7 +3,6 @@ from .models import Profile
 
 
 def score_processor(request):
-
     try:
 
         user_total_score = Profile.objects.get(user=request.user).score

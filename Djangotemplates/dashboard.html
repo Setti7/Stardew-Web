@@ -27,13 +27,14 @@
 
 									{% if user.user|has_group:"donor" %}
 										<td data-toggle="tooltip" data-placement="left"
-											title="Thanks for your donation!">🛡️
+											title="Thanks for your donation!">🛡️{{ user.user }}
 									{% elif user.user|has_group:"staff" %}
 										<td data-toggle="tooltip" data-placement="left"
-											title="I'm a staff member!">🗝️
+											title="I'm a staff member!">🗝️{{ user.user }}
 									{% else %}
-										<td>
-									{% endif %}{{ user.user }}{% if user.position == 1 %}
+										<td>{{ user.user }}
+									{% endif %}
+									{% if user.position == 1 %}
 									🥇{% elif user.position == 2 %} 🥈{% elif user.position == 3 %} 🥉{% endif %}</td>
 									<td>{{ user.score }}</td>
 
@@ -53,22 +54,22 @@
 
 					<h2>Frames per day on this week:</h2>
 
-					<div class="btn-toolbar mb-2 mb-md-0">
+					<div class="btn-group mb-2 mb-md-0" role="group">
 
 						{% if user.is_authenticated %}
-							<button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal"
+							<button type="button" class="btn btn-danger" data-toggle="modal"
 									data-target="#accnt">
 								Manage your data
 							</button>
 						{% else %}
-							<button type="button" class="btn btn-danger" style="margin-right: 5px" data-toggle="modal"
+							<button type="button" class="btn btn-danger" data-toggle="modal"
 									data-target="#how-to-help">
 								How to Help
 							</button>
 						{% endif %}
 
 						<button id='more-stats-btn' type="button" class="btn btn-light">
-							More Statistics
+							More statistics
 						</button>
 
 					</div>
@@ -76,7 +77,7 @@
 
 				<canvas class="my-4" id="Chart" width="950" height="500"></canvas>
 
-				<div id="scroll-here" class="card">
+				<div id="more-stats" class="card">
 					<div class="card-header" style="text-align: center">
 						Here are some numbers:
 					</div>
@@ -91,15 +92,26 @@
 							<strong>{{ avg_user_score }}</strong>.
 						</p>
 						<p class="card-text">
-							<strong>{{ avg_session_score }} points</strong> is the average score earned by 1 fishing
-							session.
+							<strong>{{ avg_session_score }} frames</strong> is the average score earned by 1 fishing
+							session, with an average time of <strong>{{ avg_session_time }} seconds</strong>.
 						</p>
 						<p class="card-text">
-							<strong>{{ avg_session_time }} seconds</strong> is the average time of 1 fishing session.
-						</p>
-						<p class="card-text">
-							The top 3 contributors account for <strong>{{ top_3_score_percent }}%</strong> of the total
+							The top 3 contributors account for <strong>more than {{ top_3_score_percent }}%</strong> of the total
 							score.
+						</p>
+						<p class="card-text">
+							The longest fishing session recorded is from
+							{% if longest_session.user|has_group:"donor" %}
+								<strong data-toggle="tooltip" data-placement="left" title="Thanks for your donation!">
+									🛡️{{ longest_session.user }}
+								</strong>
+							{% elif longest_session.user|has_group:"staff" %}
+								<strong data-toggle="tooltip" data-placement="left" title="I'm a staff member!">
+									🗝️{{ longest_session.user }}
+								</strong>
+							{% endif %}, with <strong>{{ longest_session.max_score }} frames</strong> and a duration of
+							<strong>{{ longest_session.time }} seconds!</strong>
+
 						</p>
 					</div>
 				</div>
@@ -299,7 +311,7 @@
 
 		$("#more-stats-btn").click(function () {
             $('html,body').animate({
-                    scrollTop: $("#scroll-here").offset().top
+                    scrollTop: $("#more-stats").offset().top
                 },
                 'slow');
         });
