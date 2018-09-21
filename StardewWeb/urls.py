@@ -1,41 +1,35 @@
-"""StardewWeb URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path, include
-from django.views.generic import RedirectView
-from django.contrib.auth import views as auth_views
-from StardewWeb import views as core_views
-from django.views.defaults import page_not_found
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.urls import path, include
+from django.views.generic import RedirectView
+
 import Data.views as data_views
+from StardewWeb import views as core_views
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/home')),
     path('admin/', admin.site.urls, name='admin'),
+
+    path('', RedirectView.as_view(url='/home')),
     path('home/', data_views.home_page, name='home page'),
     path('ranking/', include('Data.urls'), name='ranking'),
     path('api/', include('api.urls'), name='api'),
+
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('accounts/create/', core_views.signup, name='create account'),
+
+    path('accounts/password_reset', auth_views.password_reset, name='password_reset'),
+    path('accounts/password_reset/done', auth_views.password_reset_done, name='password_reset_done'),
+    path('accounts/reset/<uidb64>/<token>', auth_views.password_reset_confirm, name='password_reset_confirm'),
+    path('accounts/reset/done', auth_views.password_reset_complete, name='password_reset_complete'),
+
     path('404/', core_views.error_404),
     path('500/', core_views.error_500),
     path('400/', core_views.error_400),
     path('403/', core_views.error_403),
+
     path('donation/success', core_views.donation_success),
     path('donation/canceled', core_views.donation_canceled),
 

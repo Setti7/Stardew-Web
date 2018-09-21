@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'StardewWeb.middleware.UserBasedExceptionMiddleware'
 ]
 
 REST_FRAMEWORK = {
@@ -85,6 +86,9 @@ WSGI_APPLICATION = 'StardewWeb.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+    EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
