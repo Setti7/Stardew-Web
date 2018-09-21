@@ -119,6 +119,7 @@
 	</div>
 </nav>
 
+<div id="body"></div>
 {% block body %}
 
 {% endblock body %}
@@ -128,7 +129,7 @@
 		<p align="center" class="text-muted">
 			2018 - Stardew Valley Fishing Bot - {{ admin_email }}
 		</p>
-		<p align="center"><a href="#">Back to top</a></p>
+		<p align="center"><a href="#" id="back-to-top">Back to top</a></p>
 	</footer>
 {% endblock footer %}
 
@@ -149,6 +150,13 @@
 {% endblock end_script %}
 
 <script>
+
+	$("#back-to-top").click(function () {
+            $('html,body').animate({
+                    scrollTop: $("#body").offset().top
+                },
+                'slow');
+        });
 
     $(function () {
         $('[data-toggle="popover"]').popover()
