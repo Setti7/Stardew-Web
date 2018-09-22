@@ -39,14 +39,13 @@
 
 	<div class="checkbox m-3">
 		<div class="clearfix text-center">
-			<a style="float: left;" href="{% url 'password_reset' %}">Forgot password/username?</a>
+			<a style="float: left;" href="{% url 'password_reset' %}">Forgot?</a>
 			<a style="float: right;" href="{% url 'create account' %}">Create account</a>
 		</div>
 	</div>
 
 	<button class="btn btn-lg btn-primary btn-block" value="login" type="submit">Login</button>
 	<input type="hidden" name="next" value="{{ next }}"/>
-	<p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2018</p>
 </form>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
