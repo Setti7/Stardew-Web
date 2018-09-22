@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Data.apps.DataConfig',
     'api.apps.ApiConfig',
+    'Account.apps.AccountConfig',
 
     'rest_framework.authtoken',
     'raven.contrib.django.raven_compat',

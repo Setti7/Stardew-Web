@@ -16,15 +16,7 @@ urlpatterns = [
     path('ranking/', include('Data.urls'), name='ranking'),
     path('api/', include('api.urls'), name='api'),
 
-    path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/create/', core_views.signup, name='create account'),
-
-    path('accounts/password_reset', auth_views.password_reset,
-         {'html_email_template_name': 'registration/password_reset_email.html'}, name='password_reset'),
-    path('accounts/password_reset/done', auth_views.password_reset_done, name='password_reset_done'),
-    path('accounts/reset/<uidb64>/<token>', auth_views.password_reset_confirm, name='password_reset_confirm'),
-    path('accounts/reset/done', auth_views.password_reset_complete, name='password_reset_complete'),
+    path('accounts/', include('Account.urls'), name='account'),
 
     path('404/', core_views.error_404),
     path('500/', core_views.error_500),

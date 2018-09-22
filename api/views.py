@@ -10,7 +10,7 @@ from rest_framework.authtoken.models import Token
 
 from Data.forms import UserDataForm
 from Data.models import UserData, Version, Profile
-from StardewWeb.forms import SignUpForm
+from Account.forms import SignUpForm
 from api.forms import MessageForm
 from api.models import Message
 
