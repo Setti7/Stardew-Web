@@ -19,7 +19,11 @@ def data_delete(request):
 
     if request.method == 'POST':
         item_id = request.POST.get('data_id')
-        item = UserData.objects.get(id=item_id)
+
+        try:
+            item = UserData.objects.get(id=item_id)
+        except:
+            return HttpResponse(status=500)
 
         # There must be a simple verification so check if the user who sent the request is the owner of the data
         if request.user == item.user:

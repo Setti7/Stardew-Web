@@ -106,6 +106,23 @@ else:
         }
     }
 
+    # LOGGING = {
+    #     'version': 1,
+    #     'disable_existing_loggers': False,
+    #     'handlers': {
+    #         'logfile': {
+    #             'level': 'DEBUG',
+    #             'class': 'logging.FileHandler',
+    #             'filename': 'server.log',
+    #         },
+    #     },
+    #     'loggers': {
+    #         'django': {
+    #             'handlers': ['logfile'],
+    #         },
+    #     },
+    # }
+
 RAVEN_CONFIG = {
     'dsn': 'https://8d41809bddc14951b3fd1508ec839729:63ed0ae41de14d6c9ac0b9e340b9c10f@sentry.io/1282060',
     # If you are using git, you can also automatically configure the
@@ -157,18 +174,33 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
-EMAIL_ADMIN = "admin@dedeco.me"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-# EMAIL_HOST = 'smtp.sendgrid.net'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'apikey'
-# EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
-# EMAIL_USE_TLS = True
+if DEBUG:
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'nao.responda.python@gmail.com'
-EMAIL_HOST_PASSWORD = '$enhagenerica321'
-EMAIL_USE_TLS = True
+    DOMAIN = 'dedeco.me'
+
+    EMAIL_ADMIN = "admin@%s" % DOMAIN
+    DEFAULT_FROM_EMAIL = 'nao.responda.python@gmail.com'
+    ACCOUNT_RECOVERY_EMAIL = 'nao.responda.python@gmail.com'
+
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = 'nao.responda.python@gmail.com'
+    EMAIL_HOST_PASSWORD = '$enhagenerica321'
+    EMAIL_USE_TLS = True
+
+else:
+
+    DOMAIN = 'dedeco.me'
+
+    EMAIL_ADMIN = "admin@%s" % DOMAIN
+    DEFAULT_FROM_EMAIL = 'account-recovery@%s' % DOMAIN
+    ACCOUNT_RECOVERY_EMAIL = 'no-reply@%s' % DOMAIN
+
+    EMAIL_HOST = 'smtp.sendgrid.net'
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = 'apikey'
+    EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
+    EMAIL_USE_TLS = True
