@@ -86,9 +86,6 @@ WSGI_APPLICATION = 'StardewWeb.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-    EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
-
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -108,12 +105,12 @@ else:
         }
     }
 
-    RAVEN_CONFIG = {
-        'dsn': 'https://8d41809bddc14951b3fd1508ec839729:63ed0ae41de14d6c9ac0b9e340b9c10f@sentry.io/1282060',
-        # If you are using git, you can also automatically configure the
-        # release based on the git info.
-        'release': raven.fetch_git_sha(BASE_DIR),
-    }
+RAVEN_CONFIG = {
+    'dsn': 'https://8d41809bddc14951b3fd1508ec839729:63ed0ae41de14d6c9ac0b9e340b9c10f@sentry.io/1282060',
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(BASE_DIR),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -160,3 +157,17 @@ LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
 EMAIL_ADMIN = "admin@dedeco.me"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'apikey'
+# EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
+# EMAIL_USE_TLS = True
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'nao.responda.python@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('nao.responda.python_password')
+EMAIL_USE_TLS = True
