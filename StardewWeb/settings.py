@@ -196,8 +196,8 @@ else:
     DOMAIN = 'dedeco.me'
 
     EMAIL_ADMIN = "admin@%s" % DOMAIN
-    DEFAULT_FROM_EMAIL = 'account-recovery@%s' % DOMAIN
-    ACCOUNT_RECOVERY_EMAIL = 'no-reply@%s' % DOMAIN
+    DEFAULT_FROM_EMAIL = 'no-reply@%s' % DOMAIN
+    ACCOUNT_RECOVERY_EMAIL = 'account-recovery@%s' % DOMAIN
 
     EMAIL_HOST = 'smtp.sendgrid.net'
     EMAIL_PORT = 587
