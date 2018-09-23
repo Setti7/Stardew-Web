@@ -3,6 +3,8 @@ from uuid import uuid4
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Sum
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -81,6 +83,10 @@ def delete_file(sender, instance, *args, **kwargs):
         if os.path.isfile(instance.file.path):
             profile = Profile.objects.get(user=instance.user)
             profile.score -= instance.score
+
+            # If profile score is negative for some reason, sum every user_data sent from this user to get real score
+            if profile.score < 0:
+                profile.score = UserData.objects.filter(user=instance.user).aggregate(Sum('score'))['score__sum']
 
             os.remove(instance.file.path)
             profile.save()

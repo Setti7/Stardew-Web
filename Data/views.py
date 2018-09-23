@@ -44,9 +44,11 @@ def ranking(request):
 
     # Progress Bar data:
     # ----------------------------------------------------
-    score_sum = UserData.objects.aggregate(Sum('score'))['score__sum']
+    score_sum = Profile.objects.aggregate(Sum('score'))['score__sum']
+
+    # Percent of individual help
     total_time_played = round(score_sum / 3600, 2)
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and score_sum > 0:
         help_percent = round(100 * (Profile.objects.get(user=request.user).score) / score_sum, 1)
     else:
         help_percent = 0
@@ -74,23 +76,35 @@ def ranking(request):
 
     # Average number of sessions per user
     # ----------------------------------------------------
-    avg_session_score = round(UserData.objects.aggregate(Avg('score'))['score__avg'])
-    avg_session_time = round(avg_session_score / 60, 2)
+    avg_session_score = UserData.objects.aggregate(Avg('score'))['score__avg']
+
+    avg_session_score = round(avg_session_score) if avg_session_score is not None else 0
+    avg_session_time = round(avg_session_score / 60, 2) if avg_session_score is not None else 0
 
     # Top 3 users
     # ----------------------------------------------------
     top_3_score_sum = Profile.objects.order_by('-score')[:3].aggregate(Sum('score'))['score__sum']
-    top_3_score_percent = round(100 * top_3_score_sum / score_sum, 2)
+    if top_3_score_sum is not None and score_sum > 0:
+        top_3_score_percent = round(100 * top_3_score_sum / score_sum, 2)
+    else:
+        top_3_score_percent = 0
 
     # Longest fishing session
     # ----------------------------------------------------
     max_score = UserData.objects.aggregate(Max('score'))['score__max']
     max_score_users = UserData.objects.filter(score=max_score)
 
-    rand_user = random.randint(0, len(max_score_users) - 1)
+    if max_score_users is not None and max_score is not None:
+        rand_user = random.randint(0, len(max_score_users) - 1)
 
-    max_score_user = [user for user in max_score_users][rand_user]
-    longest_session_dict = {'max_score': max_score, 'user': max_score_user, 'time': round(max_score/60, 1)}
+        max_score_user = [user for user in max_score_users][rand_user]
+        time = round(max_score/60, 1)
+    else:
+        max_score = 0
+        max_score_user = 'admin'
+        time = 0
+
+    longest_session_dict = {'max_score': max_score, 'user': max_score_user, 'time': time}
 
     return render(request, 'dashboard.html', context={
 

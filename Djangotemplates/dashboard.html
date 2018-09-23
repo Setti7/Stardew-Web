@@ -103,13 +103,17 @@
 							The longest fishing session recorded is from
 							{% if longest_session.user|has_group:"donor" %}
 								<strong data-toggle="tooltip" data-placement="left" title="Thanks for your donation!">
-									🛡️{{ longest_session.user }}
+									🛡️{{ longest_session.user }},
 								</strong>
 							{% elif longest_session.user|has_group:"staff" %}
 								<strong data-toggle="tooltip" data-placement="left" title="I'm a staff member!">
-									🗝️{{ longest_session.user }}
+									🗝️{{ longest_session.user }},
 								</strong>
-							{% endif %}, with <strong>{{ longest_session.max_score }} frames</strong> and a duration of
+							{% else %}
+								<strong>
+									{{ longest_session.user }},
+								</strong>
+							{% endif %}with <strong>{{ longest_session.max_score }} frames</strong> and a duration of
 							<strong>{{ longest_session.time }} seconds!</strong>
 
 						</p>
@@ -126,12 +130,16 @@
 								<div class="modal-body">
 
 									<div>
-										<h2 style="float: left" id="Hall">Data Submitted: {{ help_percent }}% of total
-											score</h2>
+
 										<button style="float: right;" type="button" class="close" data-dismiss="modal"
 												aria-label="Close">
 											<span aria-hidden="true">&times;</span>
 										</button>
+
+										<h2 style="float: left" id="help-percent-header">Data Submitted: {{ help_percent }}% of total
+											score
+										</h2>
+
 									</div>
 
 									{% if user_data %}
@@ -180,7 +188,7 @@
 											</tbody>
 										</table>
 									{% else %}
-										<hr>
+										<hr style="clear: both">
 										<p>You haven't submitted any data yet. Download the desktop client <a
 												href="https://github.com/Setti7/SVFB-GUI/releases">here</a> to start.
 										</p>
@@ -278,7 +286,7 @@
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: [today, _6d, _5d, _4d, _3d, _2d, _1d, today],
+                labels: [today, _6d, _5d, _4d, _3d, _2d, _1d, 'Today'],
                 datasets: [{
                     data: values.reverse(),
                     lineTension: 0,
@@ -332,6 +340,7 @@
                         theForm.parents('tr').fadeOut();
                         $("#user-score-div").load(location.href + " #user-score-div");
                         $("#hall-of-fame").load(location.href + " #hall-of-fame");
+                        $("#help-percent-header").load(location.href + " #help-percent-header");
                     }
                 });
             });

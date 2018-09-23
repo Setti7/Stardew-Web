@@ -30,6 +30,7 @@
 	{% for field in form %}
 
 		<div class="form-label-group">
+
 			<input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}"
 				   class="form-control" required autofocus>
 			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
