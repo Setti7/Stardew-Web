@@ -3,12 +3,17 @@ from django.contrib.auth.models import Group, User
 
 register = template.Library()
 
+
 @register.filter(name='has_group')
-def has_group(user, group_name):
+def has_group(username, group_name):
     try:
-        username = User.objects.get(username=user)
-        group =  Group.objects.get(name=group_name)
-        return group in username.groups.all()
+        user = User.objects.get(username=username)
+
+        if group_name == 'staff':
+            return user.is_staff
+
+        group = Group.objects.get(name=group_name)
+        return group in user.groups.all()
 
     except:
         return None

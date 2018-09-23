@@ -4,7 +4,6 @@ from uuid import uuid4
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -34,8 +33,6 @@ class UserData(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     processed = models.BooleanField()
     version = models.ForeignKey('Version', on_delete=models.SET_NULL, null=True)
-
-    # TODO: if fishing session was successful: successful = models.BooleanField()
 
     class Meta:
         ordering = ["-score"]
