@@ -1,9 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
 from django.urls import path, include
-from django.views.generic import RedirectView
 
 import Data.views as data_views
 from StardewWeb import views as core_views
@@ -11,8 +9,7 @@ from StardewWeb import views as core_views
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
 
-    path('', RedirectView.as_view(url='/home')),
-    path('home/', data_views.home_page, name='home page'),
+    path('', data_views.home_page, name='home page'),
     path('ranking/', include('Data.urls'), name='ranking'),
     path('api/', include('api.urls'), name='api'),
 

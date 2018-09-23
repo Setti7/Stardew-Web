@@ -174,14 +174,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
-
+# Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DOMAIN = 'dedeco.me'
+EMAIL_ADMIN = "admin@%s" % DOMAIN
 
 if DEBUG:
 
-    DOMAIN = 'dedeco.me'
-
-    EMAIL_ADMIN = "admin@%s" % DOMAIN
     DEFAULT_FROM_EMAIL = 'nao.responda.python@gmail.com'
     ACCOUNT_RECOVERY_EMAIL = 'nao.responda.python@gmail.com'
 
@@ -193,9 +192,6 @@ if DEBUG:
 
 else:
 
-    DOMAIN = 'dedeco.me'
-
-    EMAIL_ADMIN = "admin@%s" % DOMAIN
     DEFAULT_FROM_EMAIL = 'no-reply@%s' % DOMAIN
     ACCOUNT_RECOVERY_EMAIL = 'account-recovery@%s' % DOMAIN
 
@@ -204,3 +200,6 @@ else:
     EMAIL_HOST_USER = 'apikey'
     EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
     EMAIL_USE_TLS = True
+
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
