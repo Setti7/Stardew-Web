@@ -11,8 +11,8 @@ from rest_framework.authtoken.models import Token
 from Data.forms import UserDataForm
 from Data.models import UserData, Version, Profile
 from Account.forms import SignUpForm
-from api.forms import MessageForm
-from api.models import Message
+from Api.forms import MessageForm
+from Api.models import Message
 
 def data_delete(request):
     # POST request should contain list of all the "data_id"s to be deleted separated by commas

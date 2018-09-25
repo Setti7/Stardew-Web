@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Data.apps.DataConfig',
-    'api.apps.ApiConfig',
+    'Api.apps.ApiConfig',
     'Account.apps.AccountConfig',
     'Donation.apps.DonationConfig',
 
@@ -68,7 +68,7 @@ ROOT_URLCONF = 'StardewWeb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'Djangotemplates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

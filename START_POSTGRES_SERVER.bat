@@ -1,1 +1,0 @@
-^"C^:^/POSTGR^~1^/pg10^/bin^/pg^_ctl^" -D ^"C^:^\PostgreSQL^\data^\pg10^" -l logfile start
