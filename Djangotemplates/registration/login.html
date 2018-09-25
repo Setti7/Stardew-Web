@@ -38,6 +38,12 @@
 
 	{% endfor %}
 
+	<div class="checkbox mb-3">
+		<label>
+			<input name="remember_me" type="checkbox" value="remember-me"> Remember me
+		</label>
+	</div>
+
 	<div class="checkbox m-3">
 		<div class="clearfix text-center">
 			<a style="float: left;" href="{% url 'password_reset' %}">Forgot?</a>

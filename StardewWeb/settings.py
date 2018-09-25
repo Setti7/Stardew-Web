@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'Data.apps.DataConfig',
     'api.apps.ApiConfig',
     'Account.apps.AccountConfig',
+    'Donation.apps.DonationConfig',
 
     'rest_framework.authtoken',
     'raven.contrib.django.raven_compat',

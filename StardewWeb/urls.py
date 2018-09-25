@@ -20,8 +20,7 @@ urlpatterns = [
     path('400/', core_views.error_400),
     path('403/', core_views.error_403),
 
-    path('donation/success', core_views.donation_success),
-    path('donation/canceled', core_views.donation_canceled),
+    path('donation/', include('Donation.urls')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
