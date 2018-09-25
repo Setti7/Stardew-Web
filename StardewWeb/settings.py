@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,8 +23,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY_WEBSITE')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
-
-ALLOWED_HOSTS = ["127.0.0.1", "dedeco.me", "192.168.1.102", "*"]
 
 # Application definition
 
@@ -42,7 +39,6 @@ INSTALLED_APPS = [
     'Donation.apps.DonationConfig',
 
     'rest_framework.authtoken',
-    'raven.contrib.django.raven_compat',
 ]
 
 MIDDLEWARE = [
@@ -87,49 +83,23 @@ WSGI_APPLICATION = 'StardewWeb.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
 
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'Stardew_Web_DB',
-            'USER': 'admin',
-            'PASSWORD': 'SenhaDataBase77',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
-    }
-
-    # LOGGING = {
-    #     'version': 1,
-    #     'disable_existing_loggers': False,
-    #     'handlers': {
-    #         'logfile': {
-    #             'level': 'DEBUG',
-    #             'class': 'logging.FileHandler',
-    #             'filename': 'server.log',
-    #         },
-    #     },
-    #     'loggers': {
-    #         'django': {
-    #             'handlers': ['logfile'],
-    #         },
-    #     },
-    # }
-
-RAVEN_CONFIG = {
-    'dsn': 'https://8d41809bddc14951b3fd1508ec839729:63ed0ae41de14d6c9ac0b9e340b9c10f@sentry.io/1282060',
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    'release': raven.fetch_git_sha(BASE_DIR),
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'logfile': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': 'server.log',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['logfile'],
+#         },
+#     },
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -180,27 +150,50 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DOMAIN = 'dedeco.me'
 EMAIL_ADMIN = "admin@%s" % DOMAIN
 
+DEFAULT_FROM_EMAIL = 'no-reply@%s' % DOMAIN
+ACCOUNT_RECOVERY_EMAIL = 'account-recovery@%s' % DOMAIN
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
+EMAIL_USE_TLS = True
+
 if DEBUG:
+    ALLOWED_HOSTS = ["*"]
 
-    DEFAULT_FROM_EMAIL = 'nao.responda.python@gmail.com'
-    ACCOUNT_RECOVERY_EMAIL = 'nao.responda.python@gmail.com'
-
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 587
-    EMAIL_HOST_USER = 'nao.responda.python@gmail.com'
-    EMAIL_HOST_PASSWORD = '$enhagenerica321'
-    EMAIL_USE_TLS = True
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 else:
 
-    DEFAULT_FROM_EMAIL = 'no-reply@%s' % DOMAIN
-    ACCOUNT_RECOVERY_EMAIL = 'account-recovery@%s' % DOMAIN
+    import raven
 
-    EMAIL_HOST = 'smtp.sendgrid.net'
-    EMAIL_PORT = 587
-    EMAIL_HOST_USER = 'apikey'
-    EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
-    EMAIL_USE_TLS = True
+    ALLOWED_HOSTS = ['dedeco.me']
+
+    INSTALLED_APPS += ['raven.contrib.django.raven_compat']
+
+    RAVEN_CONFIG = {
+        'dsn': 'https://8d41809bddc14951b3fd1508ec839729:63ed0ae41de14d6c9ac0b9e340b9c10f@sentry.io/1282060',
+        # If you are using git, you can also automatically configure the
+        # release based on the git info.
+        'release': raven.fetch_git_sha(BASE_DIR),
+    }
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'Stardew_Web_DB',
+            'USER': 'admin',
+            'PASSWORD': 'SenhaDataBase77',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
+    }
 
     SECURE_SSL_REDIRECT = True
     X_FRAME_OPTIONS = 'DENY'
