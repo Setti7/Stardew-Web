@@ -10,6 +10,8 @@ import Data.views as data_views
 def error_404(request):
     return render(request, '404.html')
 
+def maintenance(request):
+    return render(request, 'maintenance/index.html')
 
 def error_500(request):
     return render(request, '500.html')
@@ -36,6 +38,7 @@ urlpatterns = [
                   path('500/', error_500),
                   path('400/', error_400),
                   path('403/', error_403),
+                  path('maintenance/', maintenance),
 
                   path('donation/', include('Donation.urls')),
 
@@ -44,3 +47,4 @@ urlpatterns = [
 admin.site.site_header = "SVFB Admin"
 admin.site.site_title = "SVFB Admin Portal"
 admin.site.index_title = "Welcome to SVFB"
+

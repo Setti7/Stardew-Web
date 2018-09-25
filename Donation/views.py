@@ -15,8 +15,8 @@ def donation_listener(request):
     return render(request, '403.html')
 
 def donation_success(request):
-    return render(request, 'donation_success.html')
+    return render(request, 'Donation/donation_success.html')
 
 
 def donation_canceled(request):
-    return render(request, 'donation_canceled.html')
+    return render(request, 'Donation/donation_canceled.html')

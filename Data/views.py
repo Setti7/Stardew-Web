@@ -9,7 +9,7 @@ from .models import UserData, Profile
 
 
 def home_page(request):
-    return render(request, 'home_page.html', context={})
+    return render(request, 'Data/home_page.html', context={})
 
 
 def ranking(request):
@@ -106,7 +106,7 @@ def ranking(request):
 
     longest_session_dict = {'max_score': max_score, 'user': max_score_user, 'time': time}
 
-    return render(request, 'dashboard.html', context={
+    return render(request, 'Data/dashboard.html', context={
 
         'bffs_dict': bffs,
         'data': json.dumps(data),
