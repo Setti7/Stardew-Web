@@ -1,5 +1,7 @@
-from django.views.debug import technical_500_response
 import sys
+
+from django.views.debug import technical_500_response
+from raven.contrib.django.raven_compat.models import sentry_exception_handler
 
 
 class UserBasedExceptionMiddleware:
@@ -10,5 +12,7 @@ class UserBasedExceptionMiddleware:
         return self.get_response(request)
 
     def process_exception(self, request, exception):
+        sentry_exception_handler(request=request)
+
         if request.user.is_superuser:
             return technical_500_response(request, *sys.exc_info())

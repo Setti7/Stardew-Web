@@ -147,19 +147,20 @@ LOGIN_REDIRECT_URL = '/'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DOMAIN = 'dedeco.me'
+DOMAIN = 'stardew-valley-fishing-bot.ml'
 EMAIL_ADMIN = "admin@%s" % DOMAIN
 
 DEFAULT_FROM_EMAIL = 'no-reply@%s' % DOMAIN
 ACCOUNT_RECOVERY_EMAIL = 'account-recovery@%s' % DOMAIN
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = 587
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
 EMAIL_USE_TLS = True
 
 if DEBUG:
+    EMAIL_PORT = 587
+
     ALLOWED_HOSTS = ["*"]
 
     DATABASES = {
@@ -170,10 +171,11 @@ if DEBUG:
     }
 
 else:
-
     import raven
 
-    ALLOWED_HOSTS = ['dedeco.me']
+    EMAIL_PORT = 465
+
+    ALLOWED_HOSTS = ['dedeco.me', 'stardew-valley-fishing-bot.ml']
 
     INSTALLED_APPS += ['raven.contrib.django.raven_compat']
 
