@@ -173,9 +173,9 @@ if DEBUG:
 else:
     import raven
 
-    EMAIL_PORT = 465
+    EMAIL_PORT = 587 #465 for ssl
 
-    ALLOWED_HOSTS = ['dedeco.me']
+    ALLOWED_HOSTS = [DOMAIN]
 
     INSTALLED_APPS += ['raven.contrib.django.raven_compat']
 
