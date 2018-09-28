@@ -147,7 +147,7 @@ LOGIN_REDIRECT_URL = '/'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DOMAIN = 'stardew-valley-fishing-bot.ml'
+DOMAIN = 'dedeco.me'
 EMAIL_ADMIN = "admin@%s" % DOMAIN
 
 DEFAULT_FROM_EMAIL = 'no-reply@%s' % DOMAIN
@@ -175,7 +175,7 @@ else:
 
     EMAIL_PORT = 465
 
-    ALLOWED_HOSTS = ['dedeco.me', 'stardew-valley-fishing-bot.ml']
+    ALLOWED_HOSTS = ['dedeco.me']
 
     INSTALLED_APPS += ['raven.contrib.django.raven_compat']
 
