@@ -157,9 +157,10 @@ EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
 EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+
 
 if DEBUG:
-    EMAIL_PORT = 587
 
     ALLOWED_HOSTS = ["*"]
 
@@ -173,9 +174,7 @@ if DEBUG:
 else:
     import raven
 
-    EMAIL_PORT = 587 #465 for ssl
-
-    ALLOWED_HOSTS = [DOMAIN]
+    ALLOWED_HOSTS = [DOMAIN, f"www.{DOMAIN}"]
 
     INSTALLED_APPS += ['raven.contrib.django.raven_compat']
 
