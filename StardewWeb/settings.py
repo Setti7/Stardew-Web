@@ -19,7 +19,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY_WEBSITE')
+SECRET_KEY = os.environ.get('SECRET_KEY_WEBSITE', None)
+
+if SECRET_KEY is None:
+    import random
+
+    SECRET_KEY = ''.join(
+        [random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+
+    os.environ['SECRET_KEY_WEBSITE'] = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
@@ -188,9 +196,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'Stardew_Web_DB',
+            'NAME': os.environ.get('DB_NAME'),
             'USER': 'admin',
-            'PASSWORD': 'SenhaDataBase77',
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
             'HOST': '127.0.0.1',
             'PORT': '5432',
         }
