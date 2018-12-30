@@ -8,8 +8,8 @@
 
 	{% load static %}
 
-	<link rel="icon" type="image/png" sizes="32x32" href="{% static '/img/logo.png' %}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{% static '/img/logo.png' %}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/logo.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/logo.png' %}">
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="theme-color" content="#ffffff">
 
@@ -21,7 +21,7 @@
 		  integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css"
 		  integrity="sha256-4y5taf5SyiLyIqR9jL3AoJU216Rb8uBEDuUjBHO9tsQ=" crossorigin="anonymous"/>
-	<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+	<link rel="stylesheet" href="{% static 'Data/css/navbar.css' %}">
 
 
 	{% block extra_static %}
@@ -49,7 +49,7 @@
 		<ul class="navbar-nav mr-auto nav-fill w-100">
 
 			<li class="nav-item">
-				<img class="navbar-brand" src="{% static 'img/logo-ico.png' %}"/>
+				<img class="navbar-brand" src="{% static 'img/logo-ico.png' %}" alt="SVFB"/>
 			</li>
 
 			<li class="nav-item {% if request.path == '/' %}active{% endif %}">

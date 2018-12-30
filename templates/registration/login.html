@@ -1,69 +1,60 @@
-<!doctype html>
-<html lang="pt-br">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="André Niero Setti">
+{% extends 'registration/base.html' %}
 
 
-	{% load static %}
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
-		  integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-	<link rel="stylesheet" href="{% static 'css/floating-labels.css' %}">
+{% block title %}
+    <title>SVFB Login</title>
+{% endblock %}
 
-	{% block title %}
-		<title>SVFB Login</title>
-	{% endblock title %}
+{% load static %}
 
-</head>
-<body>
-<form class="form-signin" method="post" action="{% url 'login' %}">
-	{% csrf_token %}
+{% block main %}
 
-	<div class="text-center mb-4">
-		<img class="mb-4" src="{% static 'img/logo.png' %}" width="72" height="72">
-		<h1 class="h3 mb-3 font-weight-normal">Access your account</h1>
-		<p style="color: #dc3545;">{% if form.errors %}Wrong password/username.<br>Try again.{% endif %}</p>
-	</div>
+    <form class="form-signin" method="post" action="{% url 'login' %}">
+        {% include 'includes/cookie_banner.html' %}
+        {% include 'includes/js_banner.html' %}
 
-	{% for field in form %}
+        {% csrf_token %}
 
-		<div class="form-label-group">
+        <img class="mb-4" src="{% static 'favicon/android-chrome-192x192.png' %}" alt="" width="72"
+             height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Access your account</h1>
+        <p style="color: #dc3545;">{% if form.errors %}Wrong password/username.<br>Try again.{% endif %}</p>
 
-			<input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}"
-				   class="form-control" required autofocus>
-			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
-		</div>
+        {% for field in form %}
 
-	{% endfor %}
+            <label for="{{ field.id_for_label }}" class="sr-only">{{ field.label }}</label>
+            <input name="{{ field.html_name }}"
+                    {% if field.value and 'password' not in field.html_name %}
+                   value="{{ field.value }}"
+                    {% endif %}
+                   type="{{ field.field.widget.input_type }}"
+                   id="{{ field.id_for_label }}"
+                   class="form-control"
+                   placeholder="{{ field.label }}"
+                   required autocorrect="off" autocapitalize="none">
 
-	<div class="checkbox mb-3">
-		<label>
-			<input name="remember_me" type="checkbox" value="remember-me"> Remember me
-		</label>
-	</div>
-
-	<div class="checkbox m-3">
-		<div class="clearfix text-center">
-			<a style="float: left;" href="{% url 'password_reset' %}">Forgot?</a>
-			<a style="float: right;" href="{% url 'create account' %}">Create account</a>
-		</div>
-	</div>
-
-	<button class="btn btn-lg btn-primary btn-block" value="login" type="submit">Login</button>
-	<input type="hidden" name="next" value="{{ next }}"/>
-</form>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-		crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
-		integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-		crossorigin="anonymous"></script>
+        {% endfor %}
 
 
-</body>
-</html>
+        <div style="margin-top: 1.5rem">
+            <a style="float: right;" href="{% url 'create account' %}">Create Account</a>
+            <a style="float: left;" href="{% url 'password_reset' %}">Forgot?</a>
+        </div>
+
+        <hr style="clear: both;">
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+            <span class='octicon octicon-sign-in'></span> Login
+        </button>
+
+        <div class="custom-control custom-checkbox mr-sm-2 mb-1" style="margin-top: 1.5rem">
+            <input type="checkbox" class="custom-control-input" id="customControlAutosizing" name="remember_me"
+                   value="remember-me" checked>
+            <label class="custom-control-label" for="customControlAutosizing"> Remember me</label>
+        </div>
+
+        <input type="hidden" name="next" value="{{ next }}"/>
+        <p class="mt-5 mb-3 text-muted">&copy; 2018 - Sardew Valley Fishing Bot</p>
+
+    </form>
+{% endblock %}

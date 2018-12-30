@@ -11,6 +11,14 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from json import loads
+
+
+def get_envvar(var):
+    with open('setup/env.json', 'r') as f:
+        data = loads(f.read())
+    return data.get(var, None)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,18 +27,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY_WEBSITE', None)
-
-if SECRET_KEY is None:
-    import random
-
-    SECRET_KEY = ''.join(
-        [random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
-
-    os.environ['SECRET_KEY_WEBSITE'] = SECRET_KEY
+SECRET_KEY = get_envvar('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
+DEBUG = get_envvar('DEBUG')
+
+DOMAIN = get_envvar('DOMAIN')
 
 # Application definition
 
@@ -73,7 +75,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -147,26 +149,27 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 1 month
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static_dev')
+]
 
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DOMAIN = 'dedeco.me'
-EMAIL_ADMIN = "admin@%s" % DOMAIN
+EMAIL_ADMIN = "Administrator admin@%s" % DOMAIN
+EMAIL_ADMIN_SHOW = "admin@%s" % DOMAIN
 
-DEFAULT_FROM_EMAIL = 'no-reply@%s' % DOMAIN
-ACCOUNT_RECOVERY_EMAIL = 'account-recovery@%s' % DOMAIN
+DEFAULT_FROM_EMAIL = 'No-Reply no-reply@%s' % DOMAIN
+ACCOUNT_RECOVERY_EMAIL = 'Account Recovery account-recovery@%s' % DOMAIN
+REGISTRATION_EMAIL = 'Welcome welcome@%s' % DOMAIN
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
+EMAIL_HOST_PASSWORD = get_envvar('SEND_GRID')
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-
 
 if DEBUG:
 
@@ -196,9 +199,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME'),
-            'USER': 'admin',
-            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'NAME': get_envvar('DB_NAME'),
+            'USER': get_envvar('DB_USER'),
+            'PASSWORD': get_envvar('DB_PASSWORD'),
             'HOST': '127.0.0.1',
             'PORT': '5432',
         }

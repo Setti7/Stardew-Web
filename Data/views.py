@@ -45,6 +45,7 @@ def ranking(request):
     # Progress Bar data:
     # ----------------------------------------------------
     score_sum = Profile.objects.aggregate(Sum('score'))['score__sum']
+    score_sum = score_sum if score_sum is not None else 0
 
     # Percent of individual help
     total_time_played = round(score_sum / 3600, 2)
@@ -72,13 +73,15 @@ def ranking(request):
 
     # Average number of frames per user
     # ----------------------------------------------------
-    avg_user_score = round(Profile.objects.aggregate(Avg('score'))['score__avg'])
+    avg_user_score = Profile.objects.aggregate(Avg('score'))['score__avg']
+    avg_user_score = round(avg_user_score) if avg_user_score is not None else 0
 
     # Average number of sessions per user
     # ----------------------------------------------------
     avg_session_score = UserData.objects.aggregate(Avg('score'))['score__avg']
-
     avg_session_score = round(avg_session_score) if avg_session_score is not None else 0
+
+
     avg_session_time = round(avg_session_score / 60, 2) if avg_session_score is not None else 0
 
     # Top 3 users
