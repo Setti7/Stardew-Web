@@ -13,11 +13,11 @@ install:
 
 script:
 #  - python manage.py makemigrations
-  - python manage.py test
-#  - coverage run manage.py test
+#  - python manage.py migrate
+  - coverage run manage.py test
 
-#after_success:
-#  - coveralls
+after_success:
+  - coveralls
 
 notifications:
   email:
