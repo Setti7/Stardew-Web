@@ -216,7 +216,7 @@ def data_upload(request):
 
                     if form.is_valid() and (file.name == 'training_data.npy'):  # and (file.size > 140000):
 
-                        score = len(list(np.load(file)))
+                        score = np.load(file).shape[0] # len(list(np.load(file))) ---- .shape[0] is faster but untested!
                         file = UserData(file=request.FILES['file'], user=user, score=score, processed=False,
                                         version=version)
                         file.save()

@@ -1,7 +1,9 @@
+import datetime
 import json
 import os
 import random
 from shutil import rmtree
+from timeit import default_timer as timer
 
 import numpy as np
 from django.conf import settings
@@ -11,7 +13,8 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from rest_framework.authtoken.models import Token
 
-from Data.models import Profile, UserData
+from Api.models import Message
+from Data.models import Profile, UserData, Version
 
 User = get_user_model()
 
@@ -19,7 +22,7 @@ User = get_user_model()
 class ApiDataDeleteTest(TestCase):
 
     def setUp(self):
-        self.user1 = User.objects.create_user(username='username1', email='test@example.com', password='password')
+        self.user1 = User.objects.create_user(username='username1', password='password')
         rmtree(os.path.join(settings.BASE_DIR, 'media_temp'), ignore_errors=True)
 
     def tearDown(self):
@@ -29,9 +32,6 @@ class ApiDataDeleteTest(TestCase):
     def test_data_delete_correct_user(self):
         """
         Tests if a logged in user can delete its own data with a POST request to the API
-        # TODO: check which is faster:
-        1) mock_file.shape[0]
-        2) len(list(mock_file))
         """
 
         # Generating mock file
@@ -66,9 +66,6 @@ class ApiDataDeleteTest(TestCase):
     def test_data_delete_wrong_user(self):
         """
         Tests if a logged in user can delete data of another user with a POST request to the API
-        # TODO: check which is faster:
-        1) mock_file.shape[0]
-        2) len(list(mock_file))
         """
 
         # Generating mock file
@@ -87,7 +84,7 @@ class ApiDataDeleteTest(TestCase):
         self.assertEqual(Profile.objects.get(user=self.user1).score, rand_score)
 
         # Creating other user
-        self.user2 = User.objects.create_user(username='username2', email='test@example.com', password='password')
+        self.user2 = User.objects.create_user(username='username2', password='password')
 
         # Logging the other user in
         self.client.login(username='username2', password='password')
@@ -102,6 +99,7 @@ class ApiDataDeleteTest(TestCase):
         self.assertEqual(response.content, b'{"success": false, "error": "Not authorized"}')
         self.assertEqual(Profile.objects.get(user=self.user1).score, rand_score)
 
+    @override_settings(MEDIA_ROOT=os.path.join(settings.BASE_DIR, 'media_temp/'))
     def test_data_delete_invalid_id(self):
         """
         Tests if a invalid id error message is being returned
@@ -145,7 +143,7 @@ class ApiDataDeleteTest(TestCase):
 class ApiTokenResetTest(TestCase):
 
     def setUp(self):
-        self.user1 = User.objects.create_user(username='username1', email='test@example.com', password='password')
+        self.user1 = User.objects.create_user(username='username1', password='password')
 
     def test_token_reset_correct_user(self):
         """
@@ -175,7 +173,7 @@ class ApiTokenResetTest(TestCase):
         Tests if a logged in user can reset token of another user with a POST request to the API
         """
 
-        self.user2 = User.objects.create_user(username='username2', email='test@example.com', password='password')
+        self.user2 = User.objects.create_user(username='username2', password='password')
 
         # Getting user tokens
         token1 = Token.objects.get(user=self.user1).key
@@ -229,7 +227,7 @@ class ApiTokenResetTest(TestCase):
 class ApiValidateTokenTest(TestCase):
 
     def setUp(self):
-        self.user1 = User.objects.create_user(username='username1', email='test@example.com', password='password')
+        self.user1 = User.objects.create_user(username='username1', password='password')
 
     def test_validate_token_valid(self):
         """
@@ -260,7 +258,7 @@ class ApiValidateTokenTest(TestCase):
         """
         Tests if token validation for user using wrong username/token combination is invalid
         """
-        self.user2 = User.objects.create_user(username='username2', email='test@example.com', password='password')
+        self.user2 = User.objects.create_user(username='username2', password='password')
 
         token = Token.objects.get(user=self.user2).key
 
@@ -294,7 +292,7 @@ class ApiValidateTokenTest(TestCase):
 class ApiScoreCheckTest(TestCase):
 
     def setUp(self):
-        self.user1 = User.objects.create_user(username='username1', email='test@example.com', password='password')
+        self.user1 = User.objects.create_user(username='username1', password='password')
 
     def test_score_check_token_valid(self):
         """
@@ -351,7 +349,7 @@ class ApiScoreCheckTest(TestCase):
 
         arbitrary_score = 1000
 
-        self.user2 = User.objects.create_user(username='username2', email='test@example.com', password='password')
+        self.user2 = User.objects.create_user(username='username2', password='password')
 
         token = Token.objects.get(user=self.user1).key
 
@@ -381,6 +379,133 @@ class ApiVersionControlTest(TestCase):
     def test_version_control_populated(self):
         """
         Tests if populated version control json response is being delivered
-        #TODO: test if populate version control is working as expected
         """
-        pass
+
+        self.version = Version.objects.create(
+            version=1.0,
+            log="Version for testing!",
+            date=datetime.datetime.today(),
+            critical=False
+        )
+
+        response = self.client.get(reverse('api version control'))
+        response_dict = json.loads(response.content)['Version Control'][0]
+
+        self.assertEqual(response_dict['Version'], '1.0')
+        self.assertEqual(response_dict['Changes'], 'Version for testing!')
+        self.assertEqual(response_dict['Date'], str(datetime.date.today()))
+        self.assertEqual(response_dict['Critical'], False)
+
+
+class ApiBugReportTest(TestCase):
+
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='username1', password='password')
+        self.version = Version.objects.create(
+            version=1.0,
+            log="Version for testing!",
+            date=datetime.datetime.today(),
+            critical=False
+        )
+
+    def test_bug_report_valid(self):
+        """
+        Tests if a valid bug report is being accepted
+        """
+
+        token = Token.objects.get(user=self.user1)
+
+        header = {"HTTP_AUTHORIZATION": f"Token {token}"}
+        data = {
+            'user': f'{self.user1.username}',
+            'message': 'Testing the bug reporting utility!',
+            'version': self.version.version
+        }
+
+        response = self.client.post(reverse('api bug report'), data=data, **header)
+
+        self.assertEqual(response.content, b'{"success": true}')
+        self.assertTrue(Message.objects.filter(user=self.user1).exists())
+
+    def test_bug_report_invalid_version(self):
+        """
+        Tests if a invalid bug report (with wrong version)) is being rejected
+        """
+
+        token = Token.objects.get(user=self.user1)
+
+        header = {"HTTP_AUTHORIZATION": f"Token {token}"}
+        data = {
+            'user': f'{self.user1.username}',
+            'message': 'Testing the bug reporting utility!',
+            'version': 2.0
+        }
+
+        response = self.client.post(reverse('api bug report'), data=data, **header)
+
+        self.assertEqual(response.content, b'{"success": false, "error": "User or version not found on database"}')
+        self.assertFalse(Message.objects.filter(user=self.user1).exists())
+
+    def test_bug_report_invalid_token(self):
+        """
+        Tests if a invalid bug report (invalid token) is being rejected
+        """
+
+        header = {"HTTP_AUTHORIZATION": f"Token invalid-token"}
+        data = {
+            'user': f'{self.user1.username}',
+            'message': 'Testing the bug reporting utility!',
+            'version': self.version.version
+        }
+
+        response = self.client.post(reverse('api bug report'), data=data, **header)
+
+        self.assertEqual(response.content, b'{"success": false, "error": "User or version not found on database"}')
+        self.assertFalse(Message.objects.filter(user=self.user1).exists())
+
+    def test_bug_report_wrong_token(self):
+        """
+        Tests if a invalid bug report (using token from another user) is being rejected
+        """
+        self.user2 = User.objects.create_user(username='username2', password='password')
+
+        token = Token.objects.get(user=self.user2)
+        header = {"HTTP_AUTHORIZATION": f"Token {token}"}
+
+        data = {
+            'user': f'{self.user1.username}',
+            'message': 'Testing the bug reporting utility!',
+            'version': self.version.version
+        }
+
+        response = self.client.post(reverse('api bug report'), data=data, **header)
+
+        self.assertEqual(response.content, b'{"success": false, "error": "Wrong formatting or missing information"}')
+        self.assertFalse(Message.objects.filter(user=self.user1).exists())
+        self.assertFalse(Message.objects.filter(user=self.user2).exists())
+
+    def test_bug_report_missing_info(self):
+        """
+        Tests if a invalid bug report (with missing message) is being rejected
+        """
+
+        token = Token.objects.get(user=self.user1)
+
+        header = {"HTTP_AUTHORIZATION": f"Token {token}"}
+        data = {
+            'user': f'{self.user1.username}',
+            'version': self.version.version
+        }
+
+        response = self.client.post(reverse('api bug report'), data=data, **header)
+
+        self.assertEqual(response.content, b'{"success": false, "error": "Wrong formatting or missing information"}')
+        self.assertFalse(Message.objects.filter(user=self.user1).exists())
+
+    def test_bug_report_GET(self):
+        """
+        Tests if GET request returns a 404 page
+        """
+
+        response = self.client.get(reverse('api bug report'))
+        self.assertEqual(response.status_code, 404)
