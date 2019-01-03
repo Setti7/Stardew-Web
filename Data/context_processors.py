@@ -1,4 +1,4 @@
-from StardewWeb.settings import EMAIL_ADMIN_SHOW
+from StardewWeb.settings import ADMIN_USERNAME
 from .models import Profile
 
 
@@ -12,4 +12,4 @@ def score_processor(request):
         user_total_score = 0
         rank = 'last'
 
-    return {'score': user_total_score, 'admin_email': EMAIL_ADMIN_SHOW, 'rank': rank}
+    return {'score': user_total_score, 'admin_username': ADMIN_USERNAME, 'rank': rank}

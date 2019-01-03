@@ -34,9 +34,18 @@ DEBUG = get_envvar('DEBUG')
 
 DOMAIN = get_envvar('DOMAIN')
 
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.reddit',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -69,13 +78,29 @@ REST_FRAMEWORK = {
     )
 }
 
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+    'reddit': {
+        'AUTH_PARAMS': {'duration': 'permanent'},
+        'SCOPE': ['identity'],
+        'USER_AGENT': 'django:RqzpM2VDcpFjKA:1.0 (by /u/ansetti)',
+    }
+}
+
 ROOT_URLCONF = 'StardewWeb.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': False,
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'allauth')],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -153,23 +178,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static_dev')
 ]
 
+# TODO: add media files again :(
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_ON_GET = True
 
-# Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_ADMIN = "Administrator admin@%s" % DOMAIN
-EMAIL_ADMIN_SHOW = "admin@%s" % DOMAIN
+ADMIN_USERNAME = "u/ansetti"
 
-DEFAULT_FROM_EMAIL = 'No-Reply no-reply@%s' % DOMAIN
-ACCOUNT_RECOVERY_EMAIL = 'Account Recovery account-recovery@%s' % DOMAIN
-REGISTRATION_EMAIL = 'Welcome welcome@%s' % DOMAIN
-
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = get_envvar('SEND_GRID')
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
 
 if DEBUG:
 

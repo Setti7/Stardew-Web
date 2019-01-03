@@ -1,33 +1,26 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Webpage for the Stardew Valley Fishing Bot project.">
-	<meta name="author" content="André Niero Setti">
 
-	{% load static %}
-
-	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/logo.png' %}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/logo.png' %}">
-	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="theme-color" content="#ffffff">
+    {% load static %}
+    {% load socialaccount %}
+    {% include 'includes/meta.html' %}
 
 
-	{% block title %}<title>Fishing Bot</title>{% endblock title %}
+    {% block title %}<title>Fishing Bot</title>{% endblock title %}
 
-	<!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
-		  integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css"
-		  integrity="sha256-4y5taf5SyiLyIqR9jL3AoJU216Rb8uBEDuUjBHO9tsQ=" crossorigin="anonymous"/>
-	<link rel="stylesheet" href="{% static 'Data/css/navbar.css' %}">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
+          integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css"
+          integrity="sha256-4y5taf5SyiLyIqR9jL3AoJU216Rb8uBEDuUjBHO9tsQ=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="{% static 'Data/css/navbar.css' %}">
 
 
-	{% block extra_static %}
-	{% endblock extra_static %}
+    {% block extra_static %}
+    {% endblock extra_static %}
 
-	<!-- Custom styles for this template -->
+    <!-- Custom styles for this template -->
 
 </head>
 
@@ -35,87 +28,89 @@
 
 <nav style="margin: 0;" class="navbar navbar-expand-md navbar-dark bg-dark sticky-top nav-fill w-100">
 
-	<div class="navbar-header">
-		<button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
-				data-target="#navbar" aria-controls="navbarResponsive" aria-expanded="false"
-				aria-label="Toggle navigation">
-			<span class="icon-bar top-bar"></span>
-			<span class="icon-bar middle-bar"></span>
-			<span class="icon-bar bottom-bar"></span>
-		</button>
-	</div>
+    <div class="navbar-header">
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
+                data-target="#navbar" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="icon-bar top-bar"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
+        </button>
+    </div>
 
-	<div class="collapse navbar-collapse" id="navbar">
-		<ul class="navbar-nav mr-auto nav-fill w-100">
+    <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mr-auto nav-fill w-100">
 
-			<li class="nav-item">
-				<img class="navbar-brand" src="{% static 'img/logo-ico.png' %}" alt="SVFB"/>
-			</li>
+            <li class="nav-item">
+                <img class="navbar-brand" src="{% static 'img/logo-ico.png' %}" alt="SVFB"/>
+            </li>
 
-			<li class="nav-item {% if request.path == '/' %}active{% endif %}">
-				<a class="nav-link" href="{% url 'home page' %}"><span class="octicon octicon-home"></span> Home<span
-						class="sr-only">(current)</span></a>
-			</li>
+            <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'home page' %}"><span class="octicon octicon-home"></span> Home<span
+                        class="sr-only">(current)</span></a>
+            </li>
 
-			<li class="nav-item">
-				<a class="nav-link {% if 'ranking' in request.path %}active{% endif %}" href="{% url 'ranking' %}"><span
-						class="octicon octicon-list-ordered"></span> Ranking</a>
-			</li>
+            <li class="nav-item">
+                <a class="nav-link {% if 'ranking' in request.path %}active{% endif %}" href="{% url 'ranking' %}"><span
+                        class="octicon octicon-list-ordered"></span> Ranking</a>
+            </li>
 
-			{% if not user.is_staff %}
-				<li class="nav-item">
-					<form style="margin-top: 7px;" action="https://www.paypal.com/cgi-bin/webscr" method="post"
-						  target="_top">
-						<input type="hidden" name="cmd" value="_s-xclick">
-						<input type="hidden" name="hosted_button_id" value="Z8RXTUZPMPQ4C">
-						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
-							   name="submit" alt="Donate - PayPal">
-					</form>
-				</li>
-			{% else %}
-				<li class="nav-item">
-					<a class="nav-link text-warning" href="{% url 'admin:index' %}"><span
-							class="octicon octicon-key"></span> Admin</a>
-				</li>
-			{% endif %}
+            {% if not user.is_staff %}
+                <li class="nav-item">
+                    <form style="margin-top: 7px;" action="https://www.paypal.com/cgi-bin/webscr" method="post"
+                          target="_top">
+                        <input type="hidden" name="cmd" value="_s-xclick">
+                        <input type="hidden" name="hosted_button_id" value="Z8RXTUZPMPQ4C">
+                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+                               name="submit" alt="Donate - PayPal">
+                    </form>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link text-warning" href="{% url 'admin:index' %}"><span
+                            class="octicon octicon-key"></span> Admin</a>
+                </li>
+            {% endif %}
 
-			<li class="nav-item">
-				<a class="nav-link" href="https://github.com/Setti7/SVFB-GUI/releases">Download <span
-						class="octicon octicon-desktop-download"></span></a>
-			</li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/Setti7/SVFB-GUI/releases">Download <span
+                        class="octicon octicon-desktop-download"></span></a>
+            </li>
 
-			<li class="nav-item">
-				<a class="nav-link" href="https://github.com/Setti7/SVFB-GUI">GitHub <span
-						class="octicon octicon-mark-github"></span></a>
-			</li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/Setti7/SVFB-GUI">GitHub <span
+                        class="octicon octicon-mark-github"></span></a>
+            </li>
 
-			<li class="nav-item">
-				{% if not user.is_authenticated %}
-					<a class="nav-link" href='{% url 'login' %}?next={{ request.path }}'>Login <span
-							class="octicon octicon-sign-in"></span></a>
-				{% else %}
-					<div class="dropdown">
-						<a class="nav-link" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-						   aria-expanded="false">
-							<span class="octicon octicon-person"></span> {{ user.username }}
-						</a>
+            <li class="nav-item">
+                {% if not user.is_authenticated %}
 
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style='text-align: center'>
-							<p class='dropdown-item' style='cursor: default'>Score: {{ score }}</p>
-							<p class='dropdown-item' style='cursor: default'>Rank:
-								{{ rank }}{% if rank == 1 %}🥇{% elif rank == 2 %}🥈{% elif rank == 3 %}
-									🥉{% endif %}</p>
-							<div class='dropdown-divider'></div>
-							<a class='dropdown-item text-danger' href='{% url 'logout' %}?next={{ request.path }}'><span
-									class='octicon octicon-sign-out'></span> Logout</a>
-						</div>
-					</div>
-				{% endif %}
+                    <a class="nav-link" href='{% provider_login_url 'reddit' %}'>Login with reddit <span
+                            class="octicon octicon-sign-in"></span></a>
+                {% else %}
+                    <div class="dropdown">
+                        <a class="nav-link" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span class="octicon octicon-person"></span> {{ user.username }}
+                        </a>
 
-			</li>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style='text-align: center'>
+                            <p class='dropdown-item' style='cursor: default'>Score: {{ score }}</p>
+                            <p class='dropdown-item' style='cursor: default'>Rank:
+                                {{ rank }}{% if rank == 1 %}🥇{% elif rank == 2 %}🥈{% elif rank == 3 %}
+                                    🥉{% endif %}</p>
+                            <div class='dropdown-divider'></div>
+                            <a class='dropdown-item text-danger'
+                               href='{% url 'account_logout' %}?next={{ request.path }}'><span
+                                    class='octicon octicon-sign-out'></span> Logout</a>
+                        </div>
+                    </div>
+                {% endif %}
 
-		</ul>
-	</div>
+            </li>
+
+        </ul>
+    </div>
 </nav>
 
 <div id="body"></div>
@@ -124,25 +119,25 @@
 {% endblock body %}
 
 {% block footer %}
-	<footer class="container">
-		<p align="center" class="text-muted">
-			2018 - Stardew Valley Fishing Bot - {{ admin_email }}
-		</p>
-		<p align="center"><a href="#" id="back-to-top">Back to top</a></p>
-	</footer>
+    <footer class="container">
+        <p align="center" class="text-muted">
+            2018 - Stardew Valley Fishing Bot - {{ admin_username }}
+        </p>
+        <p align="center"><a href="#" id="back-to-top">Back to top</a></p>
+    </footer>
 {% endblock footer %}
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-		crossorigin="anonymous"></script>
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
-		integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-		crossorigin="anonymous"></script>
+        integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
 
 {% block end_script %}
 
@@ -150,16 +145,16 @@
 
 <script>
 
-    $("#back-to-top").click(function () {
-        $('html,body').animate({
-                scrollTop: $("#body").offset().top
-            },
-            'slow');
-    });
+	$("#back-to-top").click(function () {
+		$('html,body').animate({
+				scrollTop: $("#body").offset().top
+			},
+			'slow');
+	});
 
-    $(function () {
-        $('[data-toggle="popover"]').popover()
-    });
+	$(function () {
+		$('[data-toggle="popover"]').popover()
+	});
 
 </script>
 

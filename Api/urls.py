@@ -9,6 +9,7 @@ urlpatterns = [
     path('bug-report', views.bug_report, name='api bug report'),
     path('data-upload', views.data_upload, name='api data upload'),
     path('data-delete', views.data_delete, name='api data delete'),
+    path('reset-token', views.reset_token, name='api reset token'),
     # path('download', views.download, name='update'),
     path('create-account', views.api_create_account, name='api create account'),
     path('validate-token', views.validate_token, name='api validate token'),

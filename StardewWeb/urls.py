@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import path, include
 
 import Data.views as data_views
+from Account import views as account_views
 
 
 def error_404(request):
@@ -30,7 +31,16 @@ urlpatterns = [
                   path('ranking/', include('Data.urls'), name='ranking'),
                   path('api/', include('Api.urls'), name='api'),
 
-                  path('accounts/', include('Account.urls'), name='account'),
+                  # Removing unwanted options from django-allauth
+                  path('accounts/password/set/', error_404),
+                  path('accounts/password/change/', error_404),
+                  path('accounts/signup/', error_404),
+                  path('accounts/password/reset/', error_404),
+                  path('accounts/email/', error_404),
+
+                  # Redirecting cancelled logins to home page
+                  path('accounts/social/login/cancelled/', account_views.login_cancelled),
+                  path('accounts/', include('allauth.urls')),
 
                   path('404/', error_404),
                   path('500/', error_500),
@@ -44,4 +54,3 @@ urlpatterns = [
 admin.site.site_header = "SVFB Admin"
 admin.site.site_title = "SVFB Admin Portal"
 admin.site.index_title = "Welcome to SVFB"
-

@@ -9,6 +9,9 @@ from django.shortcuts import render, redirect
 
 from .forms import SignUpForm
 
+def login_cancelled(request):
+    return redirect('home page')
+
 
 def signup(request):
     if request.method == 'POST':

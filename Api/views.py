@@ -1,18 +1,17 @@
-import os
 import numpy as np
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import get_object_or_404, render
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
 
-from Data.forms import UserDataForm
-from Data.models import UserData, Version, Profile
 from Account.forms import SignUpForm
 from Api.forms import MessageForm
 from Api.models import Message
+from Data.forms import UserDataForm
+from Data.models import UserData, Version, Profile
+
 
 def data_delete(request):
     # POST request should contain list of all the "data_id"s to be deleted separated by commas
@@ -23,17 +22,42 @@ def data_delete(request):
         try:
             item = UserData.objects.get(id=item_id)
         except:
-            return HttpResponse(status=500)
+            return JsonResponse({"success": False, "error": "Invalid id"})
 
         # There must be a simple verification so check if the user who sent the request is the owner of the data
         if request.user == item.user:
             item.delete()
-            return HttpResponse(status=200)
+            return JsonResponse({"success": True})
 
-        return HttpResponse(status=500)
+        return JsonResponse({"success": False, "error": "Not authorized"})
 
     else:
-        return render(request, '404.html')
+        return render(request, '404.html', status=404)
+
+
+def reset_token(request):
+    # POST request should contain
+
+    if request.method == 'POST':
+        token = request.POST.get('token')
+
+        try:
+            token = Token.objects.get(key=token)
+        except:
+            return JsonResponse({'success': False})
+
+        # There must be a simple verification so check if the user who sent the request is the owner of the data
+        if request.user == token.user:
+            token.delete()
+            token = Token.objects.create(user=request.user)
+
+            return JsonResponse({'token': token.key, 'success': True})
+
+        return JsonResponse({'success': False})
+
+    else:
+        return render(request, '404.html', status=404)
+
 
 @csrf_exempt
 def validate_token(request):
@@ -41,7 +65,7 @@ def validate_token(request):
     View to allow client to login at the startup of the desktop-app
 
     CLient should send POST request as:
-    headers={"Authorization": f"Token {token}"}, data={'username': f'username'}
+    headers={"Authorization": f"Token {token}"}, data={'username': f'{username}'}
     """
     if request.method == 'POST':
 
@@ -65,7 +89,7 @@ def validate_token(request):
             return JsonResponse({"valid-token": False, 'error': 'No auth token or username in POST request'})
 
     else:
-        return render(request, '404.html')
+        return render(request, '404.html', status=404)
 
 
 @csrf_exempt
@@ -90,7 +114,7 @@ def api_create_account(request):
             return JsonResponse({'success': False, 'errors': form.errors.as_json()})
 
     else:
-        return render(request, '404.html')
+        return render(request, '404.html', status=404)
 
 
 @csrf_exempt
@@ -147,7 +171,6 @@ def bug_report(request):
         except:
             return JsonResponse({"success": False, "error": "User or version not found on database"})
 
-
         # Validanting form
         form = MessageForm({
             'message': msg,
@@ -167,7 +190,7 @@ def bug_report(request):
             return JsonResponse({'success': False, 'error': 'Wrong formatting or missing information'})
 
     else:
-        return render(request, '404.html')
+        return render(request, '404.html', status=404)
 
 
 @csrf_exempt
@@ -215,7 +238,7 @@ def data_upload(request):
                 return JsonResponse({"success": False, "error": f"{e}"})
 
     else:
-        return render(request, '404.html')
+        return render(request, '404.html', status=404)
 
 # def download(request):
 #     file_path = 'Bot-Latest-Version/Globals.py'

@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 from django.db.models import Sum, Avg, Max
 from django.shortcuts import render
+from rest_framework.authtoken.models import Token
 
 from .models import UserData, Profile
 
@@ -13,6 +14,10 @@ def home_page(request):
 
 
 def ranking(request):
+    # User token:
+    # ----------------------------------------------------
+    token = Token.objects.get(user=request.user) if request.user.is_authenticated else None
+
     # Best Contributors table:
     # ----------------------------------------------------
 
@@ -81,7 +86,6 @@ def ranking(request):
     avg_session_score = UserData.objects.aggregate(Avg('score'))['score__avg']
     avg_session_score = round(avg_session_score) if avg_session_score is not None else 0
 
-
     avg_session_time = round(avg_session_score / 60, 2) if avg_session_score is not None else 0
 
     # Top 3 users
@@ -101,7 +105,7 @@ def ranking(request):
         rand_user = random.randint(0, len(max_score_users) - 1)
 
         max_score_user = [user for user in max_score_users][rand_user]
-        time = round(max_score/60, 1)
+        time = round(max_score / 60, 1)
     else:
         max_score = 0
         max_score_user = 'admin'
@@ -123,4 +127,5 @@ def ranking(request):
         'avg_session_time': avg_session_time,
         'top_3_score_percent': top_3_score_percent,
         'longest_session': longest_session_dict,
+        'token': token
     })

@@ -1,0 +1,28 @@
+.copy-token {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.copy-token:focus {
+    z-index: 2;
+}
+
+.card .card-header {
+    background-color: transparent;
+}
+
+.copy-token:hover, .copy-token:focus, .copy-token:active, .copy-token:hover > *, .copy-token:focus > *, .copy-token:active > * {
+    color: #343a40;
+    cursor: pointer;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    background-color: transparent;
+    background-image: none;
+    border-color: #343a40;
+}
+
+.hidden {
+    display: none;
+}
