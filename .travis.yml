@@ -1,0 +1,25 @@
+language: python
+
+python:
+  - 3.6
+
+before_install:
+  - export DJANGO_SETTINGS_MODULE=StardewWeb.settings
+  - export PYTHONPATH=$HOME/builds/Setti7/Stardew-Web
+  - export PIP_USE_MIRRORS=true
+
+install:
+  - pip install -r requirements.txt
+
+script:
+#  - python manage.py makemigrations
+  - python manage.py test
+#  - coverage run manage.py test
+
+#after_success:
+#  - coveralls
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
