@@ -6,6 +6,7 @@
 {% endblock extra_static %}
 
 {% block body %}
+    {% load socialaccount %}
     {% include 'includes/js_banner.html' %}
 
     {% load template_has_group %}
@@ -226,61 +227,6 @@
                 </div>
                 </div>
 
-
-                <!-- Modal Token -->
-                <div class="modal fade" id="modal-token" tabindex="-1" role="dialog"
-                     aria-labelledby="modal-token-label" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modal-token-label">Copy your token below to the desktop app
-                                </h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-
-                                <p>
-                                    This token is necessary to associate the data you sent to the server with your
-                                    account, which is used for the leaderboards. You can use the app without connecting
-                                    to reddit or sending any data, but then you wont help the development of the
-                                    project.
-                                </p>
-                                <p class="text-danger">
-                                    Don't share this token with anyone!
-                                </p>
-
-                                <p>
-                                    {# TODO: add instructions #}
-                                </p>
-
-                                <input type="text" class="form-control text-center" readonly id="token"
-                                       value="{{ token }}">
-
-                            </div>
-
-                            <div class="modal-footer" style="display: flex; justify-content: space-between">
-
-
-                                <form class="js-reset-token-form" method="post"
-                                      action="{% url 'api reset token' %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" id="token-input" name="token" value="{{ token }}">
-
-                                    <button type="submit" class="btn btn-light">Reset token
-                                    </button>
-
-                                </form>
-                                <small class="text-danger hidden" id="token-error">Error while resetting token.</small>
-
-                                <button class="btn btn-primary" onclick="copy_token()">Copy</button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
             {% else %}
 
                 <!-- Modal Data Upload -->
@@ -317,6 +263,82 @@
                 </div>
 
             {% endif %}
+
+    <!-- Modal Token -->
+    <div class="modal fade" id="modal-token" tabindex="-1" role="dialog"
+         aria-labelledby="modal-token-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    {% if user.is_authenticated %}
+                        <h5 class="modal-title" id="modal-token-label">Copy your token below to the desktop app</h5>
+                    {% else %}
+                        <h5 class="modal-title" id="modal-token-label">Please login with reddit to generate a token.</h5>
+                    {% endif %}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    {% if user.is_authenticated %}
+                        <p>
+                            This token is necessary to associate the data you sent to the server with your
+                            account, which is used for the leaderboards. You can use the app without connecting
+                            to reddit or sending any data, but then you wont help the development of the
+                            project.
+                        </p>
+                        <p class="text-danger">
+                            Don't share this token with anyone!
+                        </p>
+
+                        <input type="text" class="form-control text-center" readonly id="token"
+                               value="{{ token }}">
+                    {% else %}
+
+                        <p>
+                            This token is necessary to associate the data you sent to the server with your
+                            account, which is used for the leaderboards. You can use the app without connecting
+                            to reddit or sending any data, but then you wont help the development of the
+                            project.
+                        </p>
+
+                        <p class="text-success">
+                            After logging in with reddit, click the green "See token" button!
+                        </p>
+
+                    {% endif %}
+
+                </div>
+                {% if user.is_authenticated %}
+
+                    <div class="modal-footer" style="display: flex; justify-content: space-between">
+                        <form class="js-reset-token-form" method="post"
+                              action="{% url 'api reset token' %}">
+                            {% csrf_token %}
+                            <input type="hidden" id="token-input" name="token" value="{{ token }}">
+
+                            <button type="submit" class="btn btn-light">Reset token
+                            </button>
+
+                        </form>
+                        <small class="text-danger hidden" id="token-error">Error while resetting token.</small>
+
+                        <button class="btn btn-primary" onclick="copy_token()">Copy</button>
+
+                    </div>
+                {% else %}
+                    <div class="modal-footer" style="justify-content: center">
+
+                        <a class="btn btn-primary" href='{% provider_login_url 'reddit' %}'>Login with reddit <span
+                                class="octicon octicon-sign-in"></span></a>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
 
     {% block footer %}
         <!-- This is here just to overwrite the standard footer from header_footer.html-->
