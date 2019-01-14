@@ -54,3 +54,12 @@ urlpatterns = [
 admin.site.site_header = "SVFB Admin"
 admin.site.site_title = "SVFB Admin Portal"
 admin.site.index_title = "Welcome to SVFB"
+
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+
+    ] + urlpatterns

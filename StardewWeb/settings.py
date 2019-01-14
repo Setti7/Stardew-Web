@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'Donation.apps.DonationConfig',
 
     'rest_framework.authtoken',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -68,7 +69,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'StardewWeb.middleware.UserBasedExceptionMiddleware'
+    'StardewWeb.middleware.UserBasedExceptionMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -178,7 +180,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static_dev')
 ]
 
-# TODO: add media files again :(
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -188,6 +189,8 @@ ACCOUNT_LOGOUT_ON_GET = True
 
 ADMIN_USERNAME = "u/ansetti"
 
+# Django-debug-toolbar
+INTERNAL_IPS = ['127.0.0.1']
 
 if DEBUG:
 
