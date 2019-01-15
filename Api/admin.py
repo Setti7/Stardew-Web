@@ -29,7 +29,7 @@ class MessageAdmin(admin.ModelAdmin):
     user_link.short_description = 'user'
 
     def details(self, obj):
-        url = '/admin/api/message/%s/change/' % obj.id
+        url = '/admin/Api/message/%s/change/' % obj.id
         return format_html("<a href='{}'>More</a>", url)
 
     details.admin_order_field = 'Details'

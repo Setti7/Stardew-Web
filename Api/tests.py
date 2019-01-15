@@ -236,11 +236,12 @@ class ApiValidateTokenTest(TestCase):
         token = Token.objects.get(user=self.user1).key
 
         header = {"HTTP_AUTHORIZATION": f"Token {token}"}
-        data = {'username': f'{self.user1.username}'}
 
-        response = self.client.post(reverse('api validate token'), data=data, **header)
+        response = self.client.post(reverse('api validate token'), **header)
+        response_dict = json.loads(response.content)
 
-        self.assertEqual(response.content, b'{"valid-token": true}')
+        self.assertTrue(response_dict['valid-token'])
+        self.assertEqual(response_dict['username'], self.user1.username)
 
     def test_validate_token_invalid(self):
         """
@@ -254,20 +255,6 @@ class ApiValidateTokenTest(TestCase):
 
         self.assertEqual(response.content, b'{"valid-token": false}')
 
-    def test_validate_token_invalid_wrong_user(self):
-        """
-        Tests if token validation for user using wrong username/token combination is invalid
-        """
-        self.user2 = User.objects.create_user(username='username2', password='password')
-
-        token = Token.objects.get(user=self.user2).key
-
-        header = {"HTTP_AUTHORIZATION": f"Token {token}"}
-        data = {'username': f'{self.user1.username}'}
-
-        response = self.client.post(reverse('api validate token'), data=data, **header)
-
-        self.assertEqual(response.content, b'{"valid-token": false}')
 
     def test_validate_token_invalid_missing_info(self):
         """

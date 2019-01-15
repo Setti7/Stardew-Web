@@ -1,4 +1,3 @@
-
 $("#more-stats-btn").click(function () {
 	$('html,body').animate({
 			scrollTop: $("#more-stats").offset().top
@@ -11,6 +10,14 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+
+	const urlParams = new URLSearchParams(window.location.search);
+	const token = urlParams.get('token');
+
+	if (token === 'show') {
+		$('#modal-token').modal('show');
+	}
+
 	$('.delete-data-form').on('submit', function (e) {
 		e.preventDefault();
 		var theForm = $(this);

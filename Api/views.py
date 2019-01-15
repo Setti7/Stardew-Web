@@ -69,18 +69,13 @@ def validate_token(request):
     """
     if request.method == 'POST':
 
-        if 'username' in request.POST and 'HTTP_AUTHORIZATION' in request.META:
+        if 'HTTP_AUTHORIZATION' in request.META:
             try:
-                username = request.POST['username']
                 key = request.META['HTTP_AUTHORIZATION'].split(" ")[1]
 
-                user = User.objects.get(username=username)
                 token = Token.objects.get(key=key)
 
-                if token.user == user:
-                    return JsonResponse({"valid-token": True})
-                else:
-                    return JsonResponse({"valid-token": False})
+                return JsonResponse({"valid-token": True, 'username': str(token.user)})
 
             except:
                 return JsonResponse({"valid-token": False})
